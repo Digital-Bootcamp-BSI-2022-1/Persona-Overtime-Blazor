@@ -25,3 +25,4 @@ C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Boot
 C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Bootcamp\dotNET_Web\PersonaOvertimeWeb\obj\Debug\net6.0\PersonaOvertimeWeb.pdb
 C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Bootcamp\dotNET_Web\PersonaOvertimeWeb\obj\Debug\net6.0\PersonaOvertimeWeb.genruntimeconfig.cache
 C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Bootcamp\dotNET_Web\PersonaOvertimeWeb\obj\Debug\net6.0\ref\PersonaOvertimeWeb.dll
+C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Bootcamp\dotNET_Web\PersonaOvertimeWeb\obj\Debug\net6.0\scopedcss\Pages\Login.razor.rz.scp.css

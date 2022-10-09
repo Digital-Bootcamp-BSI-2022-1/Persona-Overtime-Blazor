@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "b6RKgDyBLb0cyg5IfCa/lETMA3REaO47Wiq4zcPKDmQ=",
+  "Hash": "anVNsqT5+xxubNrdGXICrzRGh7vXNL3Ypde3dML1r4g=",
   "Source": "PersonaOvertimeWeb",
   "BasePath": "_content/PersonaOvertimeWeb",
   "Mode": "Default",
@@ -270,6 +270,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\wwwroot\\img\\img_launcher_icon.png",
+      "SourceId": "PersonaOvertimeWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\wwwroot\\",
+      "BasePath": "_content/PersonaOvertimeWeb",
+      "RelativePath": "img/img_launcher_icon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\img_launcher_icon.png"
+    },
+    {
+      "Identity": "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\wwwroot\\img\\login_logo.png",
+      "SourceId": "PersonaOvertimeWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\wwwroot\\",
+      "BasePath": "_content/PersonaOvertimeWeb",
+      "RelativePath": "img/login_logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\login_logo.png"
     }
   ]
 }

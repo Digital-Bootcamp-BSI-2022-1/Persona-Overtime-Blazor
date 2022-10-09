@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using PersonaOvertimeWeb.Data;
+using PersonaOvertimeWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddHttpClient<IUserDetailService, UserDetailService>(client =>
+{
+    client.BaseAddress = new Uri("https://persona-overtime.herokuapp.com");
+});
 
 var app = builder.Build();
 

@@ -1,0 +1,31 @@
+@page "/login"
+
+@using Models;
+@using Services;
+@inject IUserDetailService UserDetailService;
+
+<PageTitle>Login Page - Persona</PageTitle>
+
+<div class="row">
+    <div class="col-sm-6">
+        <p>Column 1</p>
+        <img src="img/login_logo.png" alt="Persona" width="200">
+        
+    </div>
+    <div class="col-sm-6">
+        <p>Column 2</p>
+        <p>Login Account</p>
+        <div class="inputs">
+            <input type="text" placeholder="Username">
+            <br>
+            <input type="password" placeholder="Password">
+        </div>
+        <br>
+        <button>Login</button>
+    </div>
+</div>
+
+
+@code {
+    
+}
