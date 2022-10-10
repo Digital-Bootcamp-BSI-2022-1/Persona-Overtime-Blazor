@@ -30,5 +30,6 @@
     private async Task GetUserDetail()
     {
         User = await UserDetailService.GetUserDetail();
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(User));
     }
 }

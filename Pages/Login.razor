@@ -16,16 +16,46 @@
         <p>Column 2</p>
         <p>Login Account</p>
         <div class="inputs">
-            <input type="text" placeholder="Username">
-            <br>
-            <input type="password" placeholder="Password">
+            <input type="text" placeholder="Username" @bind="username">
+            <br><br>
+            <input type="password" placeholder="Password" @bind="password">
         </div>
         <br>
-        <button>Login</button>
+        <button @onclick="PostLogin">Login</button>
     </div>
 </div>
 
 
 @code {
-    
+    private string? username;
+    private string? password;
+    public HttpResponseMessage ResponseLogin { get; set; } = new();
+    LoginRequest request = new LoginRequest();
+    String responseMessage;
+    LoginResponse loginMessage;
+
+    private async Task PostLogin()
+    {
+        if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+        {
+            request.nik = username;
+            request.password = password;
+            try
+            {
+                ResponseLogin = await UserDetailService.PostLogin(request);
+                Console.WriteLine(ResponseLogin.RequestMessage);
+                Console.WriteLine(ResponseLogin.StatusCode);
+                responseMessage = await ResponseLogin.Content.ReadAsStringAsync();
+                @* Console.WriteLine(responseMessage); *@
+                loginMessage = System.Text.Json.JsonSerializer.Deserialize<LoginResponse>(responseMessage);
+                Console.WriteLine(loginMessage.token);
+                
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+    }
 }
