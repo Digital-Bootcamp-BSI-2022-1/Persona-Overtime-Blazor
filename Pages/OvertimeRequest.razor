@@ -2,8 +2,14 @@
 
 @using Models;
 @using Services;
+@using System
+@using System.IO
 @using System.Text.Json
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Logging
 @inject IOvertimeService OvertimeService;
+@inject ILogger<OvertimeRequest> Logger
+@inject IWebHostEnvironment Environment
 
 <PageTitle>Overtime Request - Persona</PageTitle>
 
@@ -12,16 +18,17 @@
 <div class="row">
     <div class="col-sm-6">
         <p>Start Date*</p>
-        <input placeholder="Select Date" @bind="StartDate">
+        <input id="StartDate" type="date" @bind="StartDate">
 
         <br><br>
 
         <p>Start Time(Plan)*</p>
-        <input placeholder="Select Time" @bind="StartTime">
+        <input type="time" placeholder="Select Time" @bind="StartTime">
 
         <br><br>
 
-        <button>Upload Attachment</button>
+        <p>Upload Attachment</p>
+        <input type="file">
 
         <br><br>
 
@@ -34,39 +41,165 @@
     </div>
     <div class="col-sm-6">
         <p>End Date*</p>
-        <input placeholder="Select Date" @bind="EndDate">
+        <input type="date" placeholder="Select Date" @bind="EndDate">
 
         <br><br>
 
         <p>End Time(Plan)*</p>
-        <input placeholder="Select Time" @bind="EndTime">
+        <input type="time" placeholder="Select Time" @bind="EndTime">
     </div>
 </div>
 <br>
 <div class="row">
-    <button>Submit</button>
+    <button class="btn" style="background-color: #3ea7c9f2; color: #ffffff" @onclick="PostOvertimeRequest">
+        @if (isLoading)
+        {
+            <p>Submitting...</p>
+        }
+        else
+        {
+            <p>Submit</p>
+        }
+    </button>
 </div>
 
-@code {
-    DateOnly StartDate;
-    DateOnly EndDate;
-    TimeOnly StartTime;
-    TimeOnly EndTime;
-    String Remarks;
-    public List<OvertimeDTO> OvertimeDataList { get; set; } = new();
+<br><br><br>
 
-    protected override async Task OnInitializedAsync()
+<h3>Upload Files</h3>
+
+<p>
+    <label>
+        Max file size:
+        <input type="number" @bind="maxFileSize" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Max allowed files:
+        <input type="number" @bind="maxAllowedFiles" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+        <InputFile OnChange="@LoadFiles" multiple />
+    </label>
+</p>
+
+@if (isLoading)
+{
+    <p>Uploading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var file in loadedFiles)
+        {
+            <li>
+                <ul>
+                    <li>Name: @file.Name</li>
+                    <li>Last modified: @file.LastModified.ToString()</li>
+                    <li>Size (bytes): @file.Size</li>
+                    <li>Content type: @file.ContentType</li>
+                </ul>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private bool isLoading;
+    DateOnly StartDate = new DateOnly(
+    year: DateTime.Now.Year,
+    month: DateTime.Now.Month,
+    day: DateTime.Now.Day
+    );
+    DateOnly EndDate = new DateOnly(
+    year: DateTime.Now.Year,
+    month: DateTime.Now.Month,
+    day: DateTime.Now.Day
+    );
+    TimeOnly StartTime = new TimeOnly(
+    hour: DateTime.Now.Hour,
+    minute: DateTime.Now.Minute,
+    second: 0
+    );
+    TimeOnly EndTime = new TimeOnly(
+    hour: DateTime.Now.Hour,
+    minute: DateTime.Now.Minute,
+    second: 0
+    );
+    @* IBrowserFile? Attachment = null; *@
+    String Remarks = "";
+
+
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 3;
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-        await GetAllOvertimeList();
+        isLoading = true;
+        loadedFiles.Clear();
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                loadedFiles.Add(file);
+
+                var trustedFileNameForFileStorage = Path.GetRandomFileName();
+                var path = Path.Combine(Environment.ContentRootPath,
+                Environment.EnvironmentName, "unsafe_uploads",
+                trustedFileNameForFileStorage);
+
+                await using FileStream fs = new(path, FileMode.Create);
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("File: {Filename} Error: {Error}",
+                file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
     }
 
-    private async Task GetAllOvertimeList()
+
+    HttpResponseMessage ResponsePost;
+    String responseMessage;
+
+    private async Task PostOvertimeRequest()
     {
-        OvertimeDataList = await OvertimeService.GetAllOvertimeList();
-        foreach (var item in OvertimeDataList)
+        isLoading = true;
+        if (StartDate != null)
         {
-            @* Console.WriteLine(JsonSerializer.Serialize(item)); *@
+            try
+            {
+                MultipartFormDataContent formDataContent = new MultipartFormDataContent();
+                formDataContent.Add(new StringContent(StartDate.ToString("MMMM dd, yyyy")), "start_date");
+                formDataContent.Add(new StringContent(EndDate.ToString("MMMM dd, yyyy")), "end_date");
+                formDataContent.Add(new StringContent(StartTime + ":00"), "start_time");
+                formDataContent.Add(new StringContent(EndTime + ":00"), "end_time");
+                formDataContent.Add(new StringContent("1"), "status");
+                formDataContent.Add(new StringContent(Remarks), "remarks");
+
+                ResponsePost = await OvertimeService.PostOvertimeRequest(formDataContent);
+                Console.WriteLine(ResponsePost.RequestMessage);
+                Console.WriteLine(ResponsePost);
+                Console.WriteLine(ResponsePost.StatusCode);
+                responseMessage = await ResponsePost.Content.ReadAsStringAsync();
+                Console.WriteLine(responseMessage);
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
-        @* Console.WriteLine(JsonSerializer.Serialize(OvertimeDataList)); *@
+        isLoading = false;
     }
 }
