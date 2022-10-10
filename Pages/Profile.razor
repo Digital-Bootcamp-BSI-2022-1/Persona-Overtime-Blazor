@@ -1,26 +1,46 @@
 @page "/profile"
 
 @using Models;
+@using PersonaOvertimeWeb.Models;
 @using Services;
 @inject IUserDetailService UserDetailService;
 
 <PageTitle>Profile</PageTitle>
 
 <h1>Profile</h1>
+<div class="col-sm-12">
+    <div class = "row">
+        <div class="col-sm-3">
+            <img src="img\user.png" alt="profile" width="200">
+        </div>
 
-<p role="status">Current count: @currentCount</p>
+        <div class="col-sm-3">
+            <p type = "text"> @User.name</p>
+            <p type = "text"> @User.nik</p>
+            <p type = "text"> @User.role</p>
+        </div>
+    </div>
+    <br>
+    <div class="col-sm-6">
+        <div class = "row">
+            <div class="col-sm-3">
+            <p type = "text">Grade: @User.grade</p>
+            <p type = "text">Phone: @User.phone</p>
+            <p type = "text">KTP: @User.ktp</p>
+            <p type = "text">Join Date: @User.join_date</p>
+            </div>
+            <div class="col-sm-3">
+            <p type = "text">Employement Status: @User.employment_status</p>
+            <p type = "text">Email: @User.email</p>
+            <p type = "text">NPWP: @User.npwp</p>
+            </div>
+        </div>
+        </div>
+</div>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-
-    public UserDTO User { get; set; } = new();
+    public UserDTO User { get; set; } = new UserDTO();
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,6 +50,7 @@
     private async Task GetUserDetail()
     {
         User = await UserDetailService.GetUserDetail();
+
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(User));
     }
 }

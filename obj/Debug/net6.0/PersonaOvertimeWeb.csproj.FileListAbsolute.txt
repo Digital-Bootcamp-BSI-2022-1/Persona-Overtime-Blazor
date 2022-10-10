@@ -26,3 +26,31 @@ C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Boot
 C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Bootcamp\dotNET_Web\PersonaOvertimeWeb\obj\Debug\net6.0\PersonaOvertimeWeb.genruntimeconfig.cache
 C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Bootcamp\dotNET_Web\PersonaOvertimeWeb\obj\Debug\net6.0\ref\PersonaOvertimeWeb.dll
 C:\Users\bsi80135\OneDrive - PT. Berlian Sistem Informasi\Documents\Digital Bootcamp\dotNET_Web\PersonaOvertimeWeb\obj\Debug\net6.0\scopedcss\Pages\Login.razor.rz.scp.css
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\appsettings.json
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\PersonaOvertimeWeb.staticwebassets.runtime.json
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\PersonaOvertimeWeb.exe
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\PersonaOvertimeWeb.deps.json
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\PersonaOvertimeWeb.runtimeconfig.json
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\PersonaOvertimeWeb.dll
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\bin\Debug\net6.0\PersonaOvertimeWeb.pdb
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.csproj.AssemblyReference.cache
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.AssemblyInfoInputs.cache
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.AssemblyInfo.cs
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.csproj.CoreCompileInputs.cache
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.RazorAssemblyInfo.cache
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.RazorAssemblyInfo.cs
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\scopedcss\Pages\Login.razor.rz.scp.css
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\scopedcss\bundle\PersonaOvertimeWeb.styles.css
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\scopedcss\projectbundle\PersonaOvertimeWeb.bundle.scp.css
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.dll
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\refint\PersonaOvertimeWeb.dll
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.pdb
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\PersonaOvertimeWeb.genruntimeconfig.cache
+C:\Users\bsi80131\WebApp\persona\Persona-Overtime-Blazor\obj\Debug\net6.0\ref\PersonaOvertimeWeb.dll

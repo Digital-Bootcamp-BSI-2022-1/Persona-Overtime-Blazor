@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\PersonaOvertimeWeb.csproj": {}
+    "C:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\PersonaOvertimeWeb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\PersonaOvertimeWeb.csproj": {
+    "C:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\PersonaOvertimeWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\PersonaOvertimeWeb.csproj",
+        "projectUniqueName": "C:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\PersonaOvertimeWeb.csproj",
         "projectName": "PersonaOvertimeWeb",
-        "projectPath": "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\PersonaOvertimeWeb.csproj",
-        "packagesPath": "C:\\Users\\bsi80135\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\obj\\",
+        "projectPath": "C:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\PersonaOvertimeWeb.csproj",
+        "packagesPath": "C:\\Users\\bsi80131\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\bsi80135\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bsi80131\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
