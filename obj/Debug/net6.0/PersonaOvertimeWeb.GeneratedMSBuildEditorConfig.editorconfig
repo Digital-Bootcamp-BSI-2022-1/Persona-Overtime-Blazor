@@ -31,8 +31,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Pages/OvertimeHistory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3ZlcnRpbWVIaXN0b3J5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Pages/OvertimeRequest.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3ZlcnRpbWVSZXF1ZXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Pages/OvertimeSubmission.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3ZlcnRpbWVTdWJtaXNzaW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Pages/Profile.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Shared/OvertimeTile.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE92ZXJ0aW1lVGlsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Shared/SurveyPrompt.razor]
@@ -42,10 +62,6 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Pages/Login.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-aatxv4b61o
 
 [C:/Users/bsi80131/WebApp/persona/Persona-Overtime-Blazor/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=

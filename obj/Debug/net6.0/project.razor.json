@@ -12,6 +12,39 @@
   "ProjectWorkspaceState": {
     "TagHelpers": [
       {
+        "HashCode": 1728664542,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.Login",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Login"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.Login"
+        }
+      },
+      {
+        "HashCode": -561178919,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.Login",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "PersonaOvertimeWeb.Pages.Login"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.Login",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": 1105838491,
         "Kind": "Components.Component",
         "Name": "PersonaOvertimeWeb.Pages.FetchData",
@@ -78,72 +111,6 @@
         }
       },
       {
-        "HashCode": 603037305,
-        "Kind": "Components.Component",
-        "Name": "PersonaOvertimeWeb.Pages.Index",
-        "AssemblyName": "PersonaOvertimeWeb",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Index"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "PersonaOvertimeWeb.Pages.Index"
-        }
-      },
-      {
-        "HashCode": 70171167,
-        "Kind": "Components.Component",
-        "Name": "PersonaOvertimeWeb.Pages.Index",
-        "AssemblyName": "PersonaOvertimeWeb",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "PersonaOvertimeWeb.Pages.Index"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "PersonaOvertimeWeb.Pages.Index",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": 1728664542,
-        "Kind": "Components.Component",
-        "Name": "PersonaOvertimeWeb.Pages.Login",
-        "AssemblyName": "PersonaOvertimeWeb",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Login"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "PersonaOvertimeWeb.Pages.Login"
-        }
-      },
-      {
-        "HashCode": -561178919,
-        "Kind": "Components.Component",
-        "Name": "PersonaOvertimeWeb.Pages.Login",
-        "AssemblyName": "PersonaOvertimeWeb",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "PersonaOvertimeWeb.Pages.Login"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "PersonaOvertimeWeb.Pages.Login",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": 1978700916,
         "Kind": "Components.Component",
         "Name": "PersonaOvertimeWeb.Pages.Profile",
@@ -173,6 +140,39 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "PersonaOvertimeWeb.Pages.Profile",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 603037305,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.Index",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Index"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.Index"
+        }
+      },
+      {
+        "HashCode": 70171167,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.Index",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "PersonaOvertimeWeb.Pages.Index"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.Index",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -16698,9 +16698,19 @@
       "FileKind": "component"
     },
     {
+      "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\Pages\\OvertimeSubmission.razor",
+      "TargetPath": "Pages\\OvertimeSubmission.razor",
+      "FileKind": "component"
+    },
+    {
       "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\_Imports.razor",
       "TargetPath": "_Imports.razor",
       "FileKind": "componentImport"
+    },
+    {
+      "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\Shared\\OvertimeTile.razor",
+      "TargetPath": "Shared\\OvertimeTile.razor",
+      "FileKind": "component"
     },
     {
       "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\Pages\\Profile.razor",
@@ -16733,6 +16743,11 @@
       "FileKind": "component"
     },
     {
+      "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\Pages\\OvertimeHistory.razor",
+      "TargetPath": "Pages\\OvertimeHistory.razor",
+      "FileKind": "component"
+    },
+    {
       "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\Pages\\_Layout.cshtml",
       "TargetPath": "Pages\\_Layout.cshtml",
       "FileKind": "mvc"
@@ -16740,6 +16755,11 @@
     {
       "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\Pages\\Index.razor",
       "TargetPath": "Pages\\Index.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Users\\bsi80131\\WebApp\\persona\\Persona-Overtime-Blazor\\Pages\\OvertimeRequest.razor",
+      "TargetPath": "Pages\\OvertimeRequest.razor",
       "FileKind": "component"
     }
   ],

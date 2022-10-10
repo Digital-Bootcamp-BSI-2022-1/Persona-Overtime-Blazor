@@ -8,6 +8,7 @@
 <PageTitle>Profile</PageTitle>
 
 <h1>Profile</h1>
+<br>
 <div class="col-sm-12">
     <div class = "row">
         <div class="col-sm-3">
@@ -21,23 +22,42 @@
         </div>
     </div>
     <br>
-    <div class="col-sm-6">
+    <div class="col-sm-8">
         <div class = "row">
-            <div class="col-sm-3">
-            <p type = "text">Grade: @User.grade</p>
-            <p type = "text">Phone: @User.phone</p>
-            <p type = "text">KTP: @User.ktp</p>
-            <p type = "text">Join Date: @User.join_date</p>
+            <div class="col-sm-4">
+            <p type = "text">Grade:</p>
+            <p type = "text">@User.grade</p>
+            <hr size="4px"/>
+
+            <p type = "text">Phone:</p>
+            <p type = "text">@User.phone</p>
+            <hr size="4px"/>
+            
+            <p type = "text">KTP:</p>
+            <p type = "text">@User.ktp</p>
+            <hr size="4px"/>
+
+            <p type = "text">Join Date:</p>
+            <p type = "text">@User.join_date</p>
+            <hr size="4px"/>
             </div>
-            <div class="col-sm-3">
-            <p type = "text">Employement Status: @User.employment_status</p>
-            <p type = "text">Email: @User.email</p>
-            <p type = "text">NPWP: @User.npwp</p>
+
+            <div class="col-sm-4">
+            <p type = "text">Employement Status:</p>
+            <p type = "text">@User.employment_status</p>
+            <hr size="4px"/>
+
+            <p type = "text">Email:</p>
+            <p type = "text">@User.email</p>
+            <hr size="4px"/>
+
+            <p type = "text">NPWP:</p>
+            <p type = "text">@User.npwp</p>
+            <hr size="4px"/>
             </div>
         </div>
         </div>
 </div>
-
 
 @code {
     public UserDTO User { get; set; } = new UserDTO();
