@@ -1,4 +1,7 @@
-﻿@page "/"
+﻿@using PersonaOvertimeWeb.Models;
+@using Services;
+@inject IOvertimeService OvertimeService;
+@page "/"
 
 <PageTitle>Index</PageTitle>
 
@@ -6,8 +9,75 @@
 
 Welcome to Persona <br><br><br><br><br><br>
 
+if (isLoading)
+{
+<p>Loading data.....</p>
+}
+else
+{
 Overtime Activity
+
+<div class="col-sm-12">
+  <div class="row sm-3">
+    <div class="column col-sm-4">
+      <div class="card">
+        <h3>Need Approval</h3>
+        <p>@OvertimestatisticData.data.approved</p>
+        <p>Some text</p>
+      </div>
+      <div class="card">
+        <h3>Approved</h3>
+        <p>@OvertimestatisticData.data.approved</p>
+        <p>Some text</p>
+      </div>
+      <div class="card">
+        <h3>Rejected</h3>
+        <p>@OvertimestatisticData.data.rejected</p>
+        <p>Some text</p>
+      </div>
+      <div class="card">
+        <h3>Settlement Approval</h3>
+        <p>@OvertimestatisticData.data.settlement_approval</p>
+        <p>Some text</p>
+      </div>
+      <div class="card">
+        <h3>Revise</h3>
+        <p>@OvertimestatisticData.data.revise</p>
+        <p>Some text</p>
+      </div>
+      <div class="card">
+        <h3>Cancelled</h3>
+        <p>@OvertimestatisticData.data.cancelled</p>
+        <p>Some text</p>
+      </div>
+      <div class="card">
+        <h3>Completed</h3>
+        <p>@OvertimestatisticData.data.completed</p>
+        <p>Some text</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <br><br><br><br><br><br>
 <SurveyPrompt Title="How is Blazor working for you?" />
+}
+@code {
+  private bool isLoading;
+  public SuccessResponse<OvertimeStatistic> OvertimestatisticData { get; set; } = new();
+
+  protected override async Task OnInitializedAsync()
+  {
+    await GetOvertimeStatistic();
+  }
+
+  private async Task GetOvertimeStatistic()
+  {
+    isLoading = true;
+    OvertimestatisticData = await OvertimeService.GetOvertimeStatistic();
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimestatisticData));
+    Console.WriteLine("TEST");
+    isLoading = false;
+  }
+}
