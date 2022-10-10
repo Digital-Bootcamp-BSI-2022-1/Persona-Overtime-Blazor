@@ -9,23 +9,33 @@
 
 <h3>Overtime History Data</h3>
 <br>
-<div class="row">
-    <div class="col-sm-4">
-        <p>Column 1</p>
-        @foreach (var item in OvertimeDataList)
-        {
-            <OvertimeTile OvertimeData=item></OvertimeTile>
-        }
+@if (isLoading)
+{
+    <br><br><br>
+    <p>Loading Overtime Data...</p>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <p>Column 1</p>
+            @foreach (var item in OvertimeDataList)
+            {
+                <OvertimeTile OvertimeData=item></OvertimeTile>
+            }
+        </div>
+        <div class="col-sm-4">
+            <p>Column 2</p>
+        </div>
+        <div class="col-sm-4">
+            <p>Column 3</p>
+        </div>
     </div>
-    <div class="col-sm-4">
-        <p>Column 2</p>
-    </div>
-    <div class="col-sm-4">
-        <p>Column 3</p>
-    </div>
-</div>
+}
 
 @code {
+    private bool isLoading;
     public List<OvertimeDTO> OvertimeDataList { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
@@ -35,11 +45,15 @@
 
     private async Task GetAllOvertimeList()
     {
+        isLoading = true;
+
         OvertimeDataList = await OvertimeService.GetAllOvertimeList();
         foreach (var item in OvertimeDataList)
         {
             @* Console.WriteLine(JsonSerializer.Serialize(item)); *@
         }
         @* Console.WriteLine(JsonSerializer.Serialize(OvertimeDataList)); *@
+
+        isLoading = false;
     }
 }
