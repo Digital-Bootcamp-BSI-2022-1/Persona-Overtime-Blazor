@@ -1,0 +1,72 @@
+@page "/overtime/request"
+
+@using Models;
+@using Services;
+@using System.Text.Json
+@inject IOvertimeService OvertimeService;
+
+<PageTitle>Overtime Request - Persona</PageTitle>
+
+<h3>Overtime Request Form</h3>
+<br>
+<div class="row">
+    <div class="col-sm-6">
+        <p>Start Date*</p>
+        <input placeholder="Select Date" @bind="StartDate">
+
+        <br><br>
+
+        <p>Start Time(Plan)*</p>
+        <input placeholder="Select Time" @bind="StartTime">
+
+        <br><br>
+
+        <button>Upload Attachment</button>
+
+        <br><br>
+
+        <p>Remarks</p>
+        <input type="text" placeholder="" @bind="Remarks">
+
+        <br><br>
+
+        <p>Request Date: </p>
+    </div>
+    <div class="col-sm-6">
+        <p>End Date*</p>
+        <input placeholder="Select Date" @bind="EndDate">
+
+        <br><br>
+
+        <p>End Time(Plan)*</p>
+        <input placeholder="Select Time" @bind="EndTime">
+    </div>
+</div>
+<br>
+<div class="row">
+    <button>Submit</button>
+</div>
+
+@code {
+    DateOnly StartDate;
+    DateOnly EndDate;
+    TimeOnly StartTime;
+    TimeOnly EndTime;
+    String Remarks;
+    public List<OvertimeDTO> OvertimeDataList { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllOvertimeList();
+    }
+
+    private async Task GetAllOvertimeList()
+    {
+        OvertimeDataList = await OvertimeService.GetAllOvertimeList();
+        foreach (var item in OvertimeDataList)
+        {
+            @* Console.WriteLine(JsonSerializer.Serialize(item)); *@
+        }
+        @* Console.WriteLine(JsonSerializer.Serialize(OvertimeDataList)); *@
+    }
+}

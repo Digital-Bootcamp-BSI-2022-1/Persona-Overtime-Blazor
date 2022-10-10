@@ -1,0 +1,45 @@
+@page "/overtime/history"
+
+@using Models;
+@using Services;
+@using System.Text.Json
+@inject IOvertimeService OvertimeService;
+
+<PageTitle>Overtime History - Persona</PageTitle>
+
+<h3>Overtime History Data</h3>
+<br>
+<div class="row">
+    <div class="col-sm-4">
+        <p>Column 1</p>
+        @foreach (var item in OvertimeDataList)
+        {
+            <OvertimeTile OvertimeData=item></OvertimeTile>
+        }
+    </div>
+    <div class="col-sm-4">
+        <p>Column 2</p>
+    </div>
+    <div class="col-sm-4">
+        <p>Column 3</p>
+    </div>
+</div>
+
+@code {
+    public List<OvertimeDTO> OvertimeDataList { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllOvertimeList();
+    }
+
+    private async Task GetAllOvertimeList()
+    {
+        OvertimeDataList = await OvertimeService.GetAllOvertimeList();
+        foreach (var item in OvertimeDataList)
+        {
+            @* Console.WriteLine(JsonSerializer.Serialize(item)); *@
+        }
+        @* Console.WriteLine(JsonSerializer.Serialize(OvertimeDataList)); *@
+    }
+}

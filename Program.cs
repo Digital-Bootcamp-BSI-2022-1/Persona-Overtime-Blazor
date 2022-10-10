@@ -14,6 +14,10 @@ builder.Services.AddHttpClient<IUserDetailService, UserDetailService>(client =>
 {
     client.BaseAddress = new Uri("https://persona-overtime.herokuapp.com");
 });
+builder.Services.AddHttpClient<IOvertimeService, OvertimeService>(client =>
+{
+    client.BaseAddress = new Uri("https://persona-overtime.herokuapp.com");
+});
 
 var app = builder.Build();
 

@@ -2,6 +2,7 @@
 
 @using Models;
 @using Services;
+@using System.Text.Json
 @inject IUserDetailService UserDetailService;
 
 <PageTitle>Login Page - Persona</PageTitle>
@@ -47,7 +48,7 @@
                 Console.WriteLine(ResponseLogin.StatusCode);
                 responseMessage = await ResponseLogin.Content.ReadAsStringAsync();
                 @* Console.WriteLine(responseMessage); *@
-                loginMessage = System.Text.Json.JsonSerializer.Deserialize<LoginResponse>(responseMessage);
+                loginMessage = JsonSerializer.Deserialize<LoginResponse>(responseMessage);
                 Console.WriteLine(loginMessage.token);
                 
             }
