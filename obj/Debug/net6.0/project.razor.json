@@ -144,6 +144,72 @@
         }
       },
       {
+        "HashCode": 345726201,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.OvertimeHistory",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "OvertimeHistory"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.OvertimeHistory"
+        }
+      },
+      {
+        "HashCode": -413894926,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.OvertimeHistory",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "PersonaOvertimeWeb.Pages.OvertimeHistory"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.OvertimeHistory",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 326105978,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.OvertimeSubmission",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "OvertimeSubmission"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.OvertimeSubmission"
+        }
+      },
+      {
+        "HashCode": 2052687718,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.OvertimeSubmission",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "PersonaOvertimeWeb.Pages.OvertimeSubmission"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.OvertimeSubmission",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": -993062015,
         "Kind": "Components.Component",
         "Name": "PersonaOvertimeWeb.Pages.Login",
@@ -173,6 +239,39 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "PersonaOvertimeWeb.Pages.Login",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 379035735,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.OvertimeRequest",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "OvertimeRequest"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.OvertimeRequest"
+        }
+      },
+      {
+        "HashCode": -120689124,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Pages.OvertimeRequest",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "PersonaOvertimeWeb.Pages.OvertimeRequest"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Pages.OvertimeRequest",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -259,39 +358,6 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "PersonaOvertimeWeb.Shared.SurveyPrompt",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": 511569445,
-        "Kind": "Components.Component",
-        "Name": "PersonaOvertimeWeb.Shared.NavMenu",
-        "AssemblyName": "PersonaOvertimeWeb",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "NavMenu"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "PersonaOvertimeWeb.Shared.NavMenu"
-        }
-      },
-      {
-        "HashCode": -903839729,
-        "Kind": "Components.Component",
-        "Name": "PersonaOvertimeWeb.Shared.NavMenu",
-        "AssemblyName": "PersonaOvertimeWeb",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "PersonaOvertimeWeb.Shared.NavMenu"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "PersonaOvertimeWeb.Shared.NavMenu",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -388,6 +454,92 @@
           "Runtime.Name": "Components.None",
           "Common.TypeName": "PersonaOvertimeWeb.Shared.MainLayout.Body",
           "Components.IsSpecialKind": "Components.ChildContent",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -1243423815,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Shared.OvertimeTile",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "OvertimeTile"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "OvertimeData",
+            "TypeName": "PersonaOvertimeWeb.Models.OvertimeDTO",
+            "Metadata": {
+              "Common.PropertyName": "OvertimeData"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Shared.OvertimeTile"
+        }
+      },
+      {
+        "HashCode": -954764885,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Shared.OvertimeTile",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "PersonaOvertimeWeb.Shared.OvertimeTile"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "OvertimeData",
+            "TypeName": "PersonaOvertimeWeb.Models.OvertimeDTO",
+            "Metadata": {
+              "Common.PropertyName": "OvertimeData"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Shared.OvertimeTile",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 511569445,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Shared.NavMenu",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "NavMenu"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Shared.NavMenu"
+        }
+      },
+      {
+        "HashCode": -903839729,
+        "Kind": "Components.Component",
+        "Name": "PersonaOvertimeWeb.Shared.NavMenu",
+        "AssemblyName": "PersonaOvertimeWeb",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "PersonaOvertimeWeb.Shared.NavMenu"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "PersonaOvertimeWeb.Shared.NavMenu",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -16683,6 +16835,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\Pages\\OvertimeSubmission.razor",
+      "TargetPath": "Pages\\OvertimeSubmission.razor",
+      "FileKind": "component"
+    },
+    {
       "FilePath": "c:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\Pages\\_Host.cshtml",
       "TargetPath": "Pages\\_Host.cshtml",
       "FileKind": "mvc"
@@ -16738,8 +16895,23 @@
       "FileKind": "component"
     },
     {
+      "FilePath": "c:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\Pages\\OvertimeHistory.razor",
+      "TargetPath": "Pages\\OvertimeHistory.razor",
+      "FileKind": "component"
+    },
+    {
       "FilePath": "c:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\Shared\\NavMenu.razor",
       "TargetPath": "Shared\\NavMenu.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\Shared\\OvertimeTile.razor",
+      "TargetPath": "Shared\\OvertimeTile.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Users\\bsi80135\\OneDrive - PT. Berlian Sistem Informasi\\Documents\\Digital Bootcamp\\dotNET_Web\\PersonaOvertimeWeb\\Pages\\OvertimeRequest.razor",
+      "TargetPath": "Pages\\OvertimeRequest.razor",
       "FileKind": "component"
     }
   ],

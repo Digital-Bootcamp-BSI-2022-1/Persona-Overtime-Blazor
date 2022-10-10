@@ -1,0 +1,13 @@
+@using Models
+
+<div class="card-body">
+    <p class="card-title">@OvertimeData.user.name</p>
+    <p class="card-text">@OvertimeData.id</p>
+    <blockquote class="card-text">Start date : @OvertimeData.start_date</blockquote>
+</div>
+
+@code {
+    // Demonstrates how a parent component can supply parameters
+    [Parameter]
+    public OvertimeDTO OvertimeData { get; set; }
+}
