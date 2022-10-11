@@ -9,7 +9,7 @@ namespace PersonaOvertimeWeb.Services
         Task<SuccessResponse<OvertimeStatistic>> GetOvertimeStatistic();
         Task<SuccessResponse<OvertimeStatistic>> GetOvertimeStatisticSuperior();
 
-        Task<HttpResponseMessage> PostOvertimeRequest(MultipartFormDataContent request);
+        Task<HttpResponseMessage> PostOvertimeRequest(MultipartFormDataContent request, string token);
         Task<List<OvertimeDTO>> GetOvertimeById(int id);
 
     }

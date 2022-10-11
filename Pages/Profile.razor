@@ -1,76 +1,110 @@
 @page "/profile"
 
 @using Models;
-@using PersonaOvertimeWeb.Models;
 @using Services;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
 @inject IUserDetailService UserDetailService;
 
 <PageTitle>Profile</PageTitle>
 
-<h1>Profile</h1>
-<br>
-<div class="col-sm-12">
-    <div class = "row">
-        <div class="col-sm-3">
-            <img src="img\user.png" alt="profile" width="200">
-        </div>
+@if (isLoadingPage)
+{
+    <br><br><br>
+    <p>Loading Page...</p>
+    <br><br><br>
+}
+else
+{
+    @if (!isLoggedIn)
+    {
+        <br><br><br>
+        <p>Please Login</p>
+        <br><br><br>
+    }
+    else
+    {
+        <h1>Profile</h1>
+        <br>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-3">
+                    <img src="img\user.png" alt="profile" width="200">
+                </div>
 
-        <div class="col-sm-3">
-            <p type = "text"> @User.name</p>
-            <p type = "text"> @User.nik</p>
-            <p type = "text"> @User.role</p>
-        </div>
-    </div>
-    <br>
-    <div class="col-sm-8">
-        <div class = "row">
-            <div class="col-sm-4">
-            <p type = "text">Grade:</p>
-            <p type = "text">@User.grade</p>
-            <hr size="4px"/>
-
-            <p type = "text">Phone:</p>
-            <p type = "text">@User.phone</p>
-            <hr size="4px"/>
-            
-            <p type = "text">KTP:</p>
-            <p type = "text">@User.ktp</p>
-            <hr size="4px"/>
-
-            <p type = "text">Join Date:</p>
-            <p type = "text">@User.join_date</p>
-            <hr size="4px"/>
+                <div class="col-sm-3">
+                    <p type="text"> @User.name</p>
+                    <p type="text"> @User.nik</p>
+                    <p type="text"> @User.role</p>
+                </div>
             </div>
+            <br>
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <p type="text">Grade:</p>
+                        <p type="text">@User.grade</p>
+                        <hr size="4px" />
 
-            <div class="col-sm-4">
-            <p type = "text">Employement Status:</p>
-            <p type = "text">@User.employment_status</p>
-            <hr size="4px"/>
+                        <p type="text">Phone:</p>
+                        <p type="text">@User.phone</p>
+                        <hr size="4px" />
 
-            <p type = "text">Email:</p>
-            <p type = "text">@User.email</p>
-            <hr size="4px"/>
+                        <p type="text">KTP:</p>
+                        <p type="text">@User.ktp</p>
+                        <hr size="4px" />
 
-            <p type = "text">NPWP:</p>
-            <p type = "text">@User.npwp</p>
-            <hr size="4px"/>
+                        <p type="text">Join Date:</p>
+                        <p type="text">@User.join_date</p>
+                        <hr size="4px" />
+                    </div>
+
+                    <div class="col-sm-4">
+                        <p type="text">Employement Status:</p>
+                        <p type="text">@User.employment_status</p>
+                        <hr size="4px" />
+
+                        <p type="text">Email:</p>
+                        <p type="text">@User.email</p>
+                        <hr size="4px" />
+
+                        <p type="text">NPWP:</p>
+                        <p type="text">@User.npwp</p>
+                        <hr size="4px" />
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-</div>
+    }
+}
 
 @code {
+    private bool isLoadingPage = true;
+    private bool isLoggedIn = false;
+    private bool isLoading = true;
     public UserDTO User { get; set; } = new UserDTO();
 
     protected override async Task OnInitializedAsync()
     {
-        await GetUserDetail();
+        isLoadingPage = true;
+        var result = await ProtectedSessionStore.GetAsync<string>("token");
+        if (result.Success)
+        {
+            isLoggedIn = true;
+            await GetUserDetail(result.Value);
+            isLoadingPage = false;
+        }
+        else
+        {
+            isLoggedIn = false;
+            isLoadingPage = false;
+        }
     }
 
-    private async Task GetUserDetail()
+    private async Task GetUserDetail(string token)
     {
-        User = await UserDetailService.GetUserDetail();
+        User = await UserDetailService.GetUserDetail(token);
 
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(User));
+        @* Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(User)); *@
     }
 }

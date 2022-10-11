@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager Navigation
 
 <PageTitle>PersonaOvertimeWeb</PageTitle>
 
@@ -16,6 +19,9 @@
         <div class="top-row px-4">
             <button title="Navigation menu" class="navbar-toggler">
                 <span class="navbar-toggler-icon"></span>
+            </button>
+            <button class="btn btn-danger" @onclick="Logout">
+                <p>Logout</p>
             </button>
             <NavLink class="nav-link" href="profile">
                 <span class="oi oi-person" aria-hidden="true"></span> Profile
@@ -35,3 +41,15 @@
         </footer>
     </main>
 </div>
+
+@code {
+    private async Task Logout()
+    {
+        await ProtectedSessionStore.DeleteAsync("token");
+        NavigateToLogin();
+    }
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
+}
