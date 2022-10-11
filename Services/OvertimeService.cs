@@ -27,9 +27,8 @@ namespace PersonaOvertimeWeb.Services
         }
         
         
-        public async Task<HttpResponseMessage> PostOvertimeRequest(MultipartFormDataContent request)
+        public async Task<HttpResponseMessage> PostOvertimeRequest(MultipartFormDataContent request, string token)
         {
-            String token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSWthd2F0aSBCYXNyaSIsIm5iZiI6MTY2NTM2NDk2OCwiZXhwIjoxNjY1NjI0MTY4LCJpYXQiOjE2NjUzNjQ5Njh9.5WmqAjGIvMPfskp52po_Q32e-NWM1Yhgq_EXWE_guZBVcbOsGzDm6ejBvc_G4PFk2nigpt511g6fITLPWNrvVg";
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _httpClient.PostAsync("/overtime", request);
             return response;

@@ -1,116 +1,128 @@
 @page "/overtime/request"
 
-@using Models;
-@using Services;
+@using BIF = BlazorInputFile
+@using Models
+@using PersonaOvertimeWeb.Components
+@using Services
 @using System
 @using System.IO
 @using System.Text.Json
 @using Microsoft.AspNetCore.Hosting
 @using Microsoft.Extensions.Logging
-@inject IOvertimeService OvertimeService;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using System.Net.Http.Headers
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager Navigation
+@inject IOvertimeService OvertimeService
 @inject ILogger<OvertimeRequest> Logger
 @inject IWebHostEnvironment Environment
 
 <PageTitle>Overtime Request - Persona</PageTitle>
 
-<h3>Overtime Request Form</h3>
-<br>
-<div class="row">
-    <div class="col-sm-6">
-        <p>Start Date*</p>
-        <input id="StartDate" type="date" @bind="StartDate">
-
-        <br><br>
-
-        <p>Start Time(Plan)*</p>
-        <input type="time" placeholder="Select Time" @bind="StartTime">
-
-        <br><br>
-
-        <p>Upload Attachment</p>
-        <input type="file">
-
-        <br><br>
-
-        <p>Remarks</p>
-        <input type="text" placeholder="" @bind="Remarks">
-
-        <br><br>
-
-        <p>Request Date: </p>
-    </div>
-    <div class="col-sm-6">
-        <p>End Date*</p>
-        <input type="date" placeholder="Select Date" @bind="EndDate">
-
-        <br><br>
-
-        <p>End Time(Plan)*</p>
-        <input type="time" placeholder="Select Time" @bind="EndTime">
-    </div>
-</div>
-<br>
-<div class="row">
-    <button class="btn" style="background-color: #3ea7c9f2; color: #ffffff" @onclick="PostOvertimeRequest">
-        @if (isLoading)
-        {
-            <p>Submitting...</p>
-        }
-        else
-        {
-            <p>Submit</p>
-        }
-    </button>
-</div>
-
-<br><br><br>
-
-<h3>Upload Files</h3>
-
-<p>
-    <label>
-        Max file size:
-        <input type="number" @bind="maxFileSize" />
-    </label>
-</p>
-
-<p>
-    <label>
-        Max allowed files:
-        <input type="number" @bind="maxAllowedFiles" />
-    </label>
-</p>
-
-<p>
-    <label>
-        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
-        <InputFile OnChange="@LoadFiles" multiple />
-    </label>
-</p>
-
-@if (isLoading)
+@if (isLoadingPage)
 {
-    <p>Uploading...</p>
+    <br><br><br>
+    <p>Loading Page...</p>
+    <br><br><br>
 }
 else
 {
-    <ul>
-        @foreach (var file in loadedFiles)
-        {
-            <li>
-                <ul>
-                    <li>Name: @file.Name</li>
-                    <li>Last modified: @file.LastModified.ToString()</li>
-                    <li>Size (bytes): @file.Size</li>
-                    <li>Content type: @file.ContentType</li>
-                </ul>
-            </li>
-        }
-    </ul>
+    @if (!isLoggedIn)
+    {
+        <br><br><br>
+        <p>Please Login</p>
+        <br><br><br>
+    }
+    else
+    {
+        <h3>Overtime Request Form</h3>
+        <br>
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Start Date*</p>
+                <input id="StartDate" type="date" @bind="StartDate">
+
+                <br><br>
+
+                <p>Start Time(Plan)*</p>
+                <input type="time" placeholder="Select Time" @bind="StartTime">
+
+                <br><br>
+
+                <p>Upload Attachment</p>
+                @* <input type="file"> *@
+                @* <InputFile OnChange="HandleFileSelected" /> *@
+                @* <BlazorInputFile.InputFile OnChange="HandleFileSelected" /> *@
+                <InputFile OnChange="@LoadFiles" />
+                @* @if (Attachment.Count != 0)
+                {
+                    <br><br>
+                    <p>Name: @Attachment[0].Name</p>
+                    <p>Content type: @Attachment[0].ContentType</p>
+                } *@
+
+                <br><br>
+
+                <p>Remarks</p>
+                <input type="text" placeholder="" @bind="Remarks">
+
+                <br><br>
+
+                <p>Request Date: </p>
+            </div>
+            <div class="col-sm-6">
+                <p>End Date*</p>
+                <input type="date" placeholder="Select Date" @bind="EndDate">
+
+                <br><br>
+
+                <p>End Time(Plan)*</p>
+                <input type="time" placeholder="Select Time" @bind="EndTime">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <button class="btn" style="background-color: #3ea7c9f2; color: #ffffff" @onclick="PostOvertimeRequest">
+                @if (isLoading)
+                {
+                    <p>Submitting...</p>
+                }
+                else
+                {
+                    <p>Submit</p>
+                }
+            </button>
+        </div>
+    }
+}
+
+@if (DialogIsOpen)
+{
+    <Dialog Title="@dialogTitle" Content="@dialogMessage" OnClose="@OnDialogClose" Type="@dialogType">
+    </Dialog>
 }
 
 @code {
-    private bool isLoading;
+    private bool isLoadingPage = true;
+    private bool isLoggedIn = false;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoadingPage = true;
+        var result = await ProtectedSessionStore.GetAsync<string>("token");
+        if (result.Success)
+        {
+            isLoggedIn = true;
+        }
+        else
+        {
+            isLoggedIn = false;
+        }
+        isLoadingPage = false;
+        isLoading = false;
+    }
+
     DateOnly StartDate = new DateOnly(
     year: DateTime.Now.Year,
     month: DateTime.Now.Month,
@@ -131,54 +143,36 @@ else
     minute: DateTime.Now.Minute,
     second: 0
     );
-    @* IBrowserFile? Attachment = null; *@
     String Remarks = "";
 
-
-    private List<IBrowserFile> loadedFiles = new();
-    private long maxFileSize = 1024 * 15;
-    private int maxAllowedFiles = 3;
+    private List<IBrowserFile> Attachment = new();
+    private long maxFileSize = 1024 * 3000;
+    private int maxAllowedFiles = 1;
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
         isLoading = true;
-        loadedFiles.Clear();
+        Attachment.Clear();
 
         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
         {
-            try
-            {
-                loadedFiles.Add(file);
-
-                var trustedFileNameForFileStorage = Path.GetRandomFileName();
-                var path = Path.Combine(Environment.ContentRootPath,
-                Environment.EnvironmentName, "unsafe_uploads",
-                trustedFileNameForFileStorage);
-
-                await using FileStream fs = new(path, FileMode.Create);
-                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("File: {Filename} Error: {Error}",
-                file.Name, ex.Message);
-            }
+            Attachment.Add(file);
         }
+        Console.WriteLine(Attachment[0].Name);
 
         isLoading = false;
     }
 
-
-    HttpResponseMessage ResponsePost;
-    String responseMessage;
-
+    HttpResponseMessage ResponsePost = new HttpResponseMessage();
+    String responseMessage = "";
     private async Task PostOvertimeRequest()
     {
         isLoading = true;
-        if (StartDate != null)
+        if (StartDate != null && EndDate != null && StartTime != null && EndTime != null)
         {
             try
             {
+                var token = await ProtectedSessionStore.GetAsync<string>("token");
                 MultipartFormDataContent formDataContent = new MultipartFormDataContent();
                 formDataContent.Add(new StringContent(StartDate.ToString("MMMM dd, yyyy")), "start_date");
                 formDataContent.Add(new StringContent(EndDate.ToString("MMMM dd, yyyy")), "end_date");
@@ -186,13 +180,32 @@ else
                 formDataContent.Add(new StringContent(EndTime + ":00"), "end_time");
                 formDataContent.Add(new StringContent("1"), "status");
                 formDataContent.Add(new StringContent(Remarks), "remarks");
+                Console.WriteLine(JsonSerializer.Serialize(Attachment));
+                if (Attachment.Count() != 0)
+                {
+                    var ms = new MemoryStream();
+                    await Attachment[0].OpenReadStream().CopyToAsync(ms);
+                    var b = ms.ToArray();
+                    var imageContent = new ByteArrayContent(b);
+                    imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse(Attachment[0].ContentType);
 
-                ResponsePost = await OvertimeService.PostOvertimeRequest(formDataContent);
-                Console.WriteLine(ResponsePost.RequestMessage);
-                Console.WriteLine(ResponsePost);
-                Console.WriteLine(ResponsePost.StatusCode);
+                    formDataContent.Add(imageContent, "attachment", Attachment[0].Name);
+                }
+
+                ResponsePost = await OvertimeService.PostOvertimeRequest(formDataContent, token.Value);
+                @* Console.WriteLine(ResponsePost.RequestMessage);
+                    Console.WriteLine(ResponsePost);
+                    Console.WriteLine(ResponsePost.StatusCode); *@
                 responseMessage = await ResponsePost.Content.ReadAsStringAsync();
                 Console.WriteLine(responseMessage);
+                if (ResponsePost.IsSuccessStatusCode)
+                {
+                    OpenDialog(title: "Request Success", message: "Successfully submitted request overtime", type: Dialog.Category.Okay);
+                }
+                else
+                {
+                    OpenDialog(title: "Request Error", message: responseMessage, type: Dialog.Category.Null);
+                }
             }
             catch (System.Exception e)
             {
@@ -200,6 +213,34 @@ else
                 throw;
             }
         }
+        else
+        {
+            OpenDialog(title: "Request Error", message: "Data Submitted incomplete", type: Dialog.Category.Null);
+        }
         isLoading = false;
+    }
+
+    private string dialogTitle = "";
+    private string dialogMessage = "";
+    private Dialog.Category dialogType = Dialog.Category.Okay;
+    private bool DialogIsOpen = false;
+    private void OpenDialog(string title, string message, Dialog.Category type)
+    {
+        DialogIsOpen = true;
+        dialogTitle = title;
+        dialogMessage = message;
+        dialogType = type;
+    }
+    private void OnDialogClose(bool isOk)
+    {
+        if (isOk)
+        {
+            NavigateToOTRequest();
+        }
+        DialogIsOpen = false;
+    }
+    private void NavigateToOTRequest()
+    {
+        Navigation.NavigateTo("/overtime/request");
     }
 }

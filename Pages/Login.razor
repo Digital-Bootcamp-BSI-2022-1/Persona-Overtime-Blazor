@@ -42,8 +42,8 @@
     private string? password;
     public HttpResponseMessage ResponseLogin { get; set; } = new();
     LoginRequest request = new LoginRequest();
-    String responseMessage;
-    LoginResponse loginMessage;
+    String responseMessage = "";
+    LoginResponse loginMessage = new LoginResponse();
 
     private async Task PostLogin()
     {
@@ -76,6 +76,10 @@
                 Console.WriteLine(e);
                 throw;
             }
+        }
+        else
+        {
+            OpenDialog(title: "Login Error", message: "Username/Password incomplete", type: Dialog.Category.Null);
         }
     }
 
