@@ -1,13 +1,36 @@
 ﻿@using PersonaOvertimeWeb.Models;
 @using Services;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
 @inject IOvertimeService OvertimeService;
 @page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
+@if (!isLoggedIn)
+{
+    <br><br><br>
+    <p>Please Login</p>
+    <br><br><br>
+}
+else
+{
 <h3>Good Afternoon!</h3>
 
+<p>Welcome to Persona</p>
 
+<br><br><br><br><br><br>
+
+@if (isLoading)
+{
+<p>Loading data.....</p>
+}
+else
+{
+<p>Overtime Activity</p>
+
+@if (OvertimestatisticData != null)
+{
 Welcome to Persona <br><br>
 
 <div class="calendar">
@@ -74,21 +97,47 @@ else{
 </div>
 </div>
 }
+}
 
 <br><br><br><br><br><br>
 <SurveyPrompt Title="How is Blazor working for you?" />
+}
+
+
 
 @code {
-  private bool isLoading;
+  private bool isLoggedIn;
+    private bool isLoading;
+    SuccessResponse<OvertimeStatistic> OvertimestatisticData = new SuccessResponse<OvertimeStatistic>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var result = await ProtectedSessionStore.GetAsync<string>("token");
+        if (result.Success)
+        {
+            isLoggedIn = true;
+            await GetOvertimeStatistic();
+        }
+        else
+        {
+            isLoggedIn = false;
+            isLoading = false;
+        }
+    }
 
   DateOnly date_now = DateOnly.FromDateTime(DateTime.Now);
 
   public SuccessResponse<OvertimeStatistic> OvertimestatisticData { get; set; } = new();
 
-  protected override async Task OnInitializedAsync()
-  {
-    await GetOvertimeStatistic();
-  }
+
+        OvertimestatisticData = await OvertimeService.GetOvertimeStatistic();
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimestatisticData));
+        Console.WriteLine("TEST");
+
+
+        isLoading = false;
+    }
 
 
   private async Task GetOvertimeStatistic()
@@ -99,4 +148,5 @@ else{
     Console.WriteLine("TEST");
     isLoading = false;
   }
+
 }

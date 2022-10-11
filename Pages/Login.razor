@@ -1,10 +1,13 @@
 @page "/login"
 
-@using Models;
-@using PersonaOvertimeWeb.Models;
-@using Services;
+@using Models
+@using PersonaOvertimeWeb.Components
+@using Services
 @using System.Text.Json
-@inject IUserDetailService UserDetailService;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager Navigation
+@inject IUserDetailService UserDetailService
 
 <PageTitle>Login Page - Persona</PageTitle>
 
@@ -12,7 +15,7 @@
     <div class="col-sm-6">
         <p>Column 1</p>
         <img src="img/login_logo.png" alt="Persona" width="200">
-        
+
     </div>
     <div class="col-sm-6">
         <p>Column 2</p>
@@ -26,6 +29,12 @@
         <button @onclick="PostLogin">Login</button>
     </div>
 </div>
+
+@if (DialogIsOpen)
+{
+    <Dialog Title="@dialogTitle" Content="@dialogMessage" OnClose="@OnDialogClose" Type="@dialogType">
+    </Dialog>
+}
 
 
 @code {
@@ -45,13 +54,22 @@
             try
             {
                 ResponseLogin = await UserDetailService.PostLogin(request);
-                Console.WriteLine(ResponseLogin.RequestMessage);
-                Console.WriteLine(ResponseLogin.StatusCode);
+                @* Console.WriteLine(ResponseLogin.RequestMessage);
+                    Console.WriteLine(ResponseLogin.StatusCode); *@
+                Console.WriteLine(ResponseLogin.IsSuccessStatusCode);
                 responseMessage = await ResponseLogin.Content.ReadAsStringAsync();
-                @* Console.WriteLine(responseMessage); *@
-                loginMessage = JsonSerializer.Deserialize<LoginResponse>(responseMessage);
-                Console.WriteLine(loginMessage.token);
-                
+                Console.WriteLine(responseMessage);
+                if (ResponseLogin.IsSuccessStatusCode)
+                {
+                    loginMessage = JsonSerializer.Deserialize<LoginResponse>(responseMessage);
+                    @* Console.WriteLine(loginMessage.token); *@
+                    await ProtectedSessionStore.SetAsync("token", loginMessage.token);
+                    OpenDialog(title: "Login Success", message: "Successfully logged in", type: Dialog.Category.Okay);
+                }
+                else
+                {
+                    OpenDialog(title: "Login Error", message: responseMessage, type: Dialog.Category.Null);
+                }
             }
             catch (System.Exception e)
             {
@@ -59,5 +77,31 @@
                 throw;
             }
         }
+    }
+
+
+    private void NavigateToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    private string dialogTitle = "";
+    private string dialogMessage = "";
+    private Dialog.Category dialogType = Dialog.Category.Okay;
+    private bool DialogIsOpen = false;
+    private void OpenDialog(string title, string message, Dialog.Category type)
+    {
+        DialogIsOpen = true;
+        dialogTitle = title;
+        dialogMessage = message;
+        dialogType = type;
+    }
+    private void OnDialogClose(bool isOk)
+    {
+        if (isOk)
+        {
+            NavigateToHome();
+        }
+        DialogIsOpen = false;
     }
 }
