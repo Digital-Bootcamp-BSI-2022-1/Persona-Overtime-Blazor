@@ -4,6 +4,7 @@
 @using Services;
 @using System.Text.Json
 @inject IOvertimeService OvertimeService;
+@inject NavigationManager UriHelper;
 
 <PageTitle>Overtime Submission - Persona</PageTitle>
 
@@ -17,25 +18,34 @@
 }
 else
 {
-    <div class="row">
-        <div class="col-sm-4">
-            <p>Column 1</p>
-            @foreach (var item in OvertimeDataList)
-            {
-                <OvertimeTile OvertimeData=item></OvertimeTile>
-            }
-        </div>
-        <div class="col-sm-4">
-            <p>Column 2</p>
-        </div>
-        <div class="col-sm-4">
-            <p>Column 3</p>
+
+<div class="container">
+    <div class="row"> 
+@foreach (var item in OvertimeDataList)
+{
+    if (item.status == 1 || item.status == 2 || item.status == 4 || item.status == 5)
+    {          
+    <div class="col-3" style="height : 220px; font-family: system-ui;">
+        <div class="card"  type="button" @onclick="() => Navigate(item.id)">
+        <div class="text-center">
+            <div class="card-header" style="background-color:#3ea7c9f2; height : 40px"><b style="color:#102060;">@item.status_text</b></div>
+                <h4 class="card-title" style="height : 40px;">@item.user.name</h4>
+                <p>@item.start_date.ToString("MMMM, dd yyyy")</p>
+                <p>@item.start_time.ToString("HH:mm:ss") - @item.end_time.ToString("HH:mm:ss")</p>
+                <p>Request Date: @item.request_date.ToString("MMMM, dd yyyy")</p>
+            </div>
         </div>
     </div>
+    }     
+}
+    </div>
+</div>
 }
 
 @code {
     private bool isLoading;
+    
+    [Parameter]
     public List<OvertimeDTO> OvertimeDataList { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
@@ -55,5 +65,10 @@ else
         @* Console.WriteLine(JsonSerializer.Serialize(OvertimeDataList)); *@
 
         isLoading = false;
+    }
+
+    private void Navigate(int id)
+    {
+       UriHelper.NavigateTo("/overtime/detail/" + id);
     }
 }

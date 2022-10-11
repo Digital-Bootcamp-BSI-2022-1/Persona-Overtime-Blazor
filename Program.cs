@@ -19,6 +19,8 @@ builder.Services.AddHttpClient<IOvertimeService, OvertimeService>(client =>
     client.BaseAddress = new Uri("https://persona-overtime.herokuapp.com");
 });
 
+builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
