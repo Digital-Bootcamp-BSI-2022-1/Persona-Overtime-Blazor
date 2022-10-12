@@ -11,5 +11,6 @@ namespace PersonaOvertimeWeb.Services
         Task<HttpResponseMessage> PostOvertimeRequest(MultipartFormDataContent request, string token);
         Task<List<OvertimeDTO>> GetOvertimeById(int id, string token);
         Task<List<OvertimeDTO>> GetOvertimeByIdSuperior(int id, string token);
+        Task<HttpResponseMessage> PostOvertimeStatus(int id, MultipartFormDataContent request, string token);
     }
 }
