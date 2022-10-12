@@ -3,11 +3,11 @@
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject NavigationManager Navigation
 
-<PageTitle>PersonaOvertimeWeb</PageTitle>
+<PageTitle>Persona</PageTitle>
 
 <div class="page">
     <div class="sidebar">
-        <a class="navbar-brand" href="login">
+        <a class="navbar-brand" href="/">
             <div>
                 <img src="img/login_logo.png" alt="Persona" width="250">
             </div>
@@ -17,15 +17,21 @@
 
     <main>
         <div class="top-row px-4">
-            <button title="Navigation menu" class="navbar-toggler">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <button class="btn btn-danger" @onclick="Logout">
-                <p>Logout</p>
-            </button>
-            <NavLink class="nav-link" href="profile">
-                <span class="oi oi-person" aria-hidden="true"></span> Profile
-            </NavLink>
+            @* <div class="row"> *@
+                @* <div class="col-sm-1"> *@
+                    <button title="Navigation menu" class="navbar-toggler">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                @* </div> *@
+                @* <div class="col-sm-11"> *@
+                    <button class="btn btn-danger" @onclick="Logout">
+                        <p>Logout</p>
+                    </button>
+                    <NavLink class="nav-link" href="profile">
+                        <span class="oi oi-person" aria-hidden="true"></span> Profile
+                    </NavLink>
+                @* </div> *@
+            @* </div> *@
         </div>
 
         <article class="content px-4">
