@@ -1,4 +1,5 @@
 @page "/login"
+@layout LoginLayout
 
 @using Models
 @using PersonaOvertimeWeb.Components
@@ -7,35 +8,79 @@
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject NavigationManager Navigation
+@inject IJSRuntime JsRuntime
 @inject IUserDetailService UserDetailService
 
-<PageTitle>Login Page - Persona</PageTitle>
+<style>
+    body {
+        background-color: rgba(250, 250, 250, 1);
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 0;
+        margin: 0;
+    }
 
-<div class="row">
-    <div class="col-sm-6">
-        <p>Column 1</p>
-        <img src="img/login_logo.png" alt="Persona" width="200">
+    body div {
+        width: 100%;
+    }
+    
+    #logo img {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
 
-    </div>
-    <div class="col-sm-6">
-        <p>Column 2</p>
-        <p>Login Account</p>
-        <div class="inputs">
-            <input type="text" placeholder="Username" @bind="username">
-            <br><br>
-            <input type="password" placeholder="Password" @bind="password">
+    #login-title {
+        color: white;
+        font-size: 20px;
+    }
+</style>
+
+<html>
+<PageTitle>Login - Persona</PageTitle>
+
+@* <meta name="viewport" content="width=device-width, initial-scale=1.0"> *@
+
+<body>
+    @* <div class="page"> *@
+    <div class="row" style="background-color: rgba(250, 250, 250, 1);">
+        <div class="col-sm-6" style="text-align: center; height: 90vh;">
+            <div id="logo" class="container"
+                style="width:100%; height:100%; display:flex;justify-content:center;align-items:center;">
+                <img src="img/login_logo.png" alt="Persona" width="70%">
+            </div>
         </div>
-        <br>
-        <button @onclick="PostLogin">Login</button>
+        <div class="col-sm-6"
+            style="text-align: center; height: 90vh; background-color: rgba(40, 176, 234, 1); display:flex;justify-content:center;align-items:center;">
+            <div id="login-input">
+                <p id="login-title">LOGIN ACCOUNT</p>
+                <br><br>
+                <div class="inputs">
+                    <div style="display:flex;justify-content:center;align-items:center;">
+                        <input type="text" placeholder="Username" @bind="username" class="form-control"
+                            style="width: 50%;">
+                    </div>
+                    <br>
+                    <div style="display:flex;justify-content:center;align-items:center;">
+                        <input type="password" placeholder="Password" @bind="password" class="form-control"
+                            style="width: 50%;" id="loginPassword">
+                    </div>
+                </div>
+                <br><br>
+                <button @onclick="PostLogin" class="btn btn-light">LOGIN</button>
+                <br><br>
+            </div>
+        </div>
     </div>
-</div>
+    @* </div> *@
 
-@if (DialogIsOpen)
-{
-    <Dialog Title="@dialogTitle" Content="@dialogMessage" OnClose="@OnDialogClose" Type="@dialogType">
-    </Dialog>
-}
+    @if (DialogIsOpen)
+    {
+        <Dialog Title="@dialogTitle" Content="@dialogMessage" OnClose="@OnDialogClose" Type="@dialogType">
+        </Dialog>
+    }
+</body>
 
+</html>
 
 @code {
     private string? username;
