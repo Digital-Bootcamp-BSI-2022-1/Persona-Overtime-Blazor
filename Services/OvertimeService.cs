@@ -52,5 +52,12 @@ namespace PersonaOvertimeWeb.Services
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             return await _httpClient.GetFromJsonAsync<List<OvertimeDTO>>("/overtime/superior/" + id);
         }
+
+        public async Task<HttpResponseMessage> PostOvertimeStatus(int id, MultipartFormDataContent request, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage response = await _httpClient.PostAsync("/update/overtime/" + id, request);
+            return response;
+        }
     }
 }
