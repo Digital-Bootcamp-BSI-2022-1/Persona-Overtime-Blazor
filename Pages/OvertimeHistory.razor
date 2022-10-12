@@ -11,17 +11,21 @@
 
 @if (isLoadingPage)
 {
+    <div style="height: 80vh;">
     <br><br><br>
     <p>Loading Page...</p>
     <br><br><br>
+    </div>
 }
 else
 {
     @if (!isLoggedIn)
     {
+        <div style="height: 80vh;">
         <br><br><br>
         <p>Please Login</p>
         <br><br><br>
+        </div>
     }
     else
     {
