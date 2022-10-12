@@ -1,12 +1,43 @@
 @page "/overtime/detail/{id}"
-@using Models;
-@using Services;
+@using Models
+@using Services
 @using System.Text.Json
-@inject IOvertimeService OvertimeService;
-@inject NavigationManager UriHelper;
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Logging
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using System.Net.Http.Headers
+@using PersonaOvertimeWeb.Components
+@inject IOvertimeService OvertimeService
+@inject IUserDetailService UserDetailService
+@inject NavigationManager UriHelper
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager Navigation
+@inject ILogger<OvertimeRequest> Logger
+@inject IWebHostEnvironment Environment
 
 <PageTitle>Overtime Detail @id</PageTitle>
 
+@if (isLoadingPage)
+{
+    <div style="height: 80vh;">
+    <br><br><br>
+    <p>Loading Page...</p>
+    <br><br><br>
+    </div>
+}
+else
+{
+    @if (!isLoggedIn)
+    {
+        <div style="height: 80vh;">
+        <br><br><br>
+        <p>Please Login</p>
+        <br><br><br>
+        </div>
+    }
+    else
+    {
 <h3>Overtime Request Detail</h3>
 <br>
 @if (isLoading)
@@ -17,7 +48,137 @@
 }
 else
 {
-<div class="row">
+@if (User.grade != "VIA")
+{
+    <div class="row">
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Start Date*</p>
+            </div>
+            <div class="col-sm-6">
+                <p>End Date*</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+            <span class="oi oi-calendar" aria-hidden="true"></span> @OvertimeByIdSuperior[0].start_date.ToString("MMMM, dd yyyy")
+            <hr size="3px"/>
+            </div>
+            <div class="col-sm-6">
+            <span class="oi oi-calendar" aria-hidden="true"></span> @OvertimeByIdSuperior[0].end_date.ToString("MMMM, dd yyyy")
+            <hr size="3px"/>
+            </div>
+        </div>
+        </div>
+    </div>
+        <br>
+
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Start Time*</p>
+            </div>
+            <div class="col-sm-6">
+                <p>End Time*</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+            <span class="oi oi-clock" aria-hidden="true"></span> @OvertimeByIdSuperior[0].start_time.ToString("HH:mm:ss")
+            <hr size="3px"/>
+            </div>
+            <div class="col-sm-6">
+            <span class="oi oi-clock" aria-hidden="true"></span> @OvertimeByIdSuperior[0].end_time.ToString("HH:mm:ss")
+            <hr size="3px"/>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <p>Remarks</p>
+        </div>
+
+        <div class="col-sm-6">
+        <p>@OvertimeByIdSuperior[0].remarks</p>
+            <hr size="3px"/>
+        <br>
+
+        <div class="col-sm-6">
+            <p>Attachment</p>
+        </div>
+
+        <div class="col-sm-12">
+            @if (OvertimeByIdSuperior[0].attachment is null)
+            {
+                <p style="color: red;">No Data*</p>
+            }
+            else
+            {<img src=@OvertimeByIdSuperior[0].attachment alt="Attachment File" width="300" height="300">}
+            <br><br>
+        @if (OvertimeByIdSuperior[0].status == 1)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>}
+        
+        else if (OvertimeByIdSuperior[0].status == 2 || OvertimeByIdSuperior[0].status == 4 || OvertimeByIdSuperior[0].status ==5)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Approved Date : @OvertimeByIdSuperior[0].approved_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeByIdSuperior[0].status == 3)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeByIdSuperior[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeByIdSuperior[0].status == 6)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Approved Date : @OvertimeByIdSuperior[0].approved_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeByIdSuperior[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeByIdSuperior[0].status == 9)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeByIdSuperior[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+        
+        </div>
+        <br>
+        @if (@OvertimeByIdSuperior[0].status == 1)
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="btn btn-success"  type="button" @onclick="() => PostOvertimeStatus(2)" >Approve</div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeByIdSuperior[0].id)">Reject</div>
+                </div>
+            </div>
+        }
+        
+        else if (@OvertimeByIdSuperior[0].status == 4)
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="btn btn-success"  type="button" @onclick="() => Navigate(OvertimeByIdSuperior[0].id)">
+                    @if (isLoading)
+                    {
+                        <p>Approving...</p>
+                    }
+                    else
+                    {
+                        <p>Approved</p>
+                    }
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="btn btn-warning"  type="button" @onclick="() => Navigate(OvertimeByIdSuperior[0].id)">Revise</div>
+                </div>
+            </div>
+        }
+    </div>
+    </div>
+}
+else
+{
+    @if (OvertimeById[0].status == 1 || OvertimeById[0].status == 3 || OvertimeById[0].status == 4 || OvertimeById[0].status == 6)
+    {
+    <div class="row">
     <div class="col-sm-6">
         <div class="row">
             <div class="col-sm-6">
@@ -73,7 +234,8 @@ else
             {<p>@OvertimeById[0].remarks</p>}
             <hr size="3px"/>
             <br>
-            <div class="col-sm-6">
+
+        <div class="col-sm-6">
             <p>Attachment</p>
         </div>
 
@@ -91,6 +253,20 @@ else
         else if (OvertimeById[0].status == 2 || OvertimeById[0].status == 4 || OvertimeById[0].status ==5)
         {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
         <p>Approved Date : @OvertimeById[0].approved_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeById[0].status == 3)
+        {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeById[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeById[0].status == 6)
+        {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Approved Date : @OvertimeById[0].approved_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeById[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeById[0].status == 9)
+        {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeById[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
         </div>
         <br>
         @if (@OvertimeById[0].status == 1)
@@ -98,39 +274,141 @@ else
             <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Cancel</div>
         }
         
-        else if (@OvertimeById[0].status == 2 || @OvertimeById[0].status == 5)
+        else if (@OvertimeById[0].status == 4)
         {
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Cancel</div>
-                </div>
-
-                <div class="col-sm-8">
-                    <div class="btn btn-success"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Submit Settlement</div>
-                </div>
-            </div>
+            <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Cancel</div>
         }
+        </div>
     </div>
-    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-6">
+            <p>Start Date*</p>
+            <input id="StartDate" type="date" @bind="StartDate">
+
+            <br><br>
+
+            <p>Start Time(Actual)*</p>
+                <input type="time" placeholder="Select Time" @bind="StartTime">
+
+            <br><br>
+
+            <p>Attachment</p>
+                @if (OvertimeById[0].attachment is null)
+                {
+                    <p style="color: red;">No Data*</p>
+                }
+                else
+                {<img src=@OvertimeById[0].attachment alt="Attachment File" width="300" height="300">}
+                
+            <br><br>
+
+            <p>Upload Attachment</p>
+                <InputFile OnChange="@LoadFiles" />
+
+            <br><br>
+
+            <p>Remarks</p>
+                <input type="text" placeholder="" @bind="Remarks">
+
+            <br><br>
+
+            <p>Request Date: </p>
+            </div>
+
+            <div class="col-sm-6">
+            <p>End Date*</p>
+                <input type="date" placeholder="Select Date" @bind="EndDate">
+
+            <br><br>
+
+            <p>End Time(Actual)*</p>
+                <input type="time" placeholder="Select Time" @bind="EndTime">
+            </div>
+            <br>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="btn btn-success"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Submit Settlement</div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Cancel</div>
+            </div>
+        </div>
+}
+}
+}}}
+
+@if (DialogIsOpen)
+{
+    <Dialog Title="@dialogTitle" Content="@dialogMessage" OnClose="@OnDialogClose" Type="@dialogType">
+    </Dialog>
 }
 
 @code {
+    private bool isLoadingPage = true;
+    private bool isLoggedIn = false;
+    private bool isLoading = true;
     [Parameter]
     public string id { get; set; }
-    private bool isLoading = true;
     public List<OvertimeDTO> OvertimeById { get; set; } = new List<OvertimeDTO>();
+    public List<OvertimeDTO> OvertimeByIdSuperior { get; set; } = new List<OvertimeDTO>();
+    public UserDTO User { get; set; } = new UserDTO();
 
     protected override async Task OnInitializedAsync()
     {
-        await GetOvertimeById(Int32.Parse(id));
+        isLoadingPage = true;
+        var result = await ProtectedSessionStore.GetAsync<string>("token");
+        if (result.Success)
+        {
+            await GetUserDetail();
+            if (User.grade == "VIA")
+            {
+                await GetOvertimeById(Int32.Parse(id));
+            }
+            else
+            {
+                await GetOvertimeByIdSuperior(Int32.Parse(id));
+            }
+            isLoggedIn = true;
+        }
+        else
+        {
+            isLoggedIn = false;
+        }
+        isLoadingPage = false;
+        isLoading = false;
     }
 
     private async Task GetOvertimeById(int id)
     {
         isLoading = true;
-        OvertimeById = await OvertimeService.GetOvertimeById(id);
 
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeById[0]));
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        OvertimeById = await OvertimeService.GetOvertimeById(id, token.Value);
+        StartDate = OvertimeById[0].start_date;
+        EndDate = OvertimeById[0].end_date;
+        StartTime = OvertimeById[0].start_time;
+        EndTime = OvertimeById[0].end_time;
+        Remarks = OvertimeById[0].remarks;
+
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeById));
+        isLoading = false;
+    }
+
+    private async Task GetOvertimeByIdSuperior(int id)
+    {
+        isLoading = true;
+
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        OvertimeByIdSuperior = await OvertimeService.GetOvertimeByIdSuperior(id, token.Value);
+        Remarks = OvertimeByIdSuperior[0].remarks;
+
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeByIdSuperior));
         isLoading = false;
     }
 
@@ -138,4 +416,130 @@ else
     {
        UriHelper.NavigateTo("/overtime/detail/" + id);
     }
+
+    private async Task GetUserDetail()
+    {
+        isLoading = true;
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        User = await UserDetailService.GetUserDetail(token.Value);
+        isLoading = false;
+    }
+
+    private async Task PostOvertimeStatus(int Status)
+    {
+        isLoading = true;
+        if (StartDate != null && EndDate != null && StartTime != null && EndTime != null)
+        {
+            try
+            {
+                var token = await ProtectedSessionStore.GetAsync<string>("token");
+                MultipartFormDataContent formDataContent = new MultipartFormDataContent();
+                formDataContent.Add(new StringContent(StartDate.ToString("MMMM dd, yyyy")), "start_date");
+                formDataContent.Add(new StringContent(EndDate.ToString("MMMM dd, yyyy")), "end_date");
+                formDataContent.Add(new StringContent(StartTime + ":00"), "start_time");
+                formDataContent.Add(new StringContent(EndTime + ":00"), "end_time");
+                formDataContent.Add(new StringContent(Status.ToString()), "status");
+                formDataContent.Add(new StringContent(Remarks), "remarks");
+                Console.WriteLine(JsonSerializer.Serialize(Attachment));
+                if (Attachment.Count() != 0)
+                {
+                    var ms = new MemoryStream();
+                    await Attachment[0].OpenReadStream().CopyToAsync(ms);
+                    var b = ms.ToArray();
+                    var imageContent = new ByteArrayContent(b);
+                    imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse(Attachment[0].ContentType);
+
+                    formDataContent.Add(imageContent, "attachment", Attachment[0].Name);
+                }
+
+                ResponsePost = await OvertimeService.PostOvertimeStatus(int.Parse(id), formDataContent, token.Value);
+                responseMessage = await ResponsePost.Content.ReadAsStringAsync();
+                Console.WriteLine(responseMessage);
+                if (ResponsePost.IsSuccessStatusCode)
+                {
+                    OpenDialog(title: "Request Success", message: "Successfully submitted request overtime", type: Dialog.Category.Okay);
+                }
+                else
+                {
+                    OpenDialog(title: "Request Error", message: responseMessage, type: Dialog.Category.Null);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        else
+        {
+            OpenDialog(title: "Request Error", message: "Data Submitted incomplete", type: Dialog.Category.Null);
+        }
+        isLoading = false;
+    }
+
+    DateOnly StartDate = new DateOnly(
+    year: DateTime.Now.Year,
+    month: DateTime.Now.Month,
+    day: DateTime.Now.Day
+    );
+    DateOnly EndDate = new DateOnly(
+    year: DateTime.Now.Year,
+    month: DateTime.Now.Month,
+    day: DateTime.Now.Day
+    );
+    TimeOnly StartTime = new TimeOnly(
+    hour: DateTime.Now.Hour,
+    minute: DateTime.Now.Minute,
+    second: 0
+    );
+    TimeOnly EndTime = new TimeOnly(
+    hour: DateTime.Now.Hour,
+    minute: DateTime.Now.Minute,
+    second: 0
+    );
+    String Remarks = "";
+
+    private List<IBrowserFile> Attachment = new();
+    private long maxFileSize = 1024 * 3000;
+    private int maxAllowedFiles = 1;
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        Attachment.Clear();
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            Attachment.Add(file);
+        }
+        Console.WriteLine(Attachment[0].Name);
+
+        isLoading = false;
+    }
+    
+    private string dialogTitle = "";
+    private string dialogMessage = "";
+    private Dialog.Category dialogType = Dialog.Category.Okay;
+    private bool DialogIsOpen = false;
+    private void OpenDialog(string title, string message, Dialog.Category type)
+    {
+        DialogIsOpen = true;
+        dialogTitle = title;
+        dialogMessage = message;
+        dialogType = type;
+    }
+    private void OnDialogClose(bool isOk)
+    {
+        if (isOk)
+        {
+            NavigateToSubmission();
+        }
+        DialogIsOpen = false;
+    }
+    private void NavigateToSubmission()
+    {
+        Navigation.NavigateTo("/overtime/submission");
+    }
+    HttpResponseMessage ResponsePost = new HttpResponseMessage();
+    String responseMessage = "";
 }
