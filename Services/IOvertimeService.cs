@@ -4,13 +4,10 @@ namespace PersonaOvertimeWeb.Services
 {
     public interface IOvertimeService
     {
-        Task<List<OvertimeDTO>> GetAllOvertimeList();
-
-        Task<SuccessResponse<OvertimeStatistic>> GetOvertimeStatistic();
-        Task<SuccessResponse<OvertimeStatistic>> GetOvertimeStatisticSuperior();
-
+        Task<List<OvertimeDTO>> GetAllOvertimeList(string token);
+        Task<SuccessResponse<OvertimeStatistic>> GetOvertimeStatistic(string token);
+        Task<SuccessResponse<OvertimeStatistic>> GetOvertimeStatisticSuperior(string token);
         Task<HttpResponseMessage> PostOvertimeRequest(MultipartFormDataContent request, string token);
-        Task<List<OvertimeDTO>> GetOvertimeById(int id);
-
+        Task<List<OvertimeDTO>> GetOvertimeById(int id, string token);
     }
 }

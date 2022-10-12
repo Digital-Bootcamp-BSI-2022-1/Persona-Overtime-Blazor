@@ -8,6 +8,22 @@
 
 <PageTitle>Overtime History - Persona</PageTitle>
 
+@if (isLoadingPage)
+{
+    <br><br><br>
+    <p>Loading Page...</p>
+    <br><br><br>
+}
+else
+{
+    @if (!isLoggedIn)
+    {
+        <br><br><br>
+        <p>Please Login</p>
+        <br><br><br>
+    }
+    else
+    {
 <h3>Overtime History Data</h3>
 <br>
 @if (isLoading)
@@ -42,23 +58,39 @@ else
     </div>
 </div>
 }
+    }}
 
 @code {
-    private bool isLoading;
+    private bool isLoadingPage = true;
+    private bool isLoggedIn = false;
+    private bool isLoading = true;
     
     [Parameter]
     public List<OvertimeDTO> OvertimeDataList { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await GetAllOvertimeList();
+        isLoadingPage = true;
+        var result = await ProtectedSessionStore.GetAsync<string>("token");
+        if (result.Success)
+        {
+            await GetAllOvertimeList();
+            isLoggedIn = true;
+        }
+        else
+        {
+            isLoggedIn = false;
+        }
+        isLoadingPage = false;
+        isLoading = false;
     }
 
     private async Task GetAllOvertimeList()
     {
         isLoading = true;
 
-        OvertimeDataList = await OvertimeService.GetAllOvertimeList();
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        OvertimeDataList = await OvertimeService.GetAllOvertimeList(token.Value);
         foreach (var item in OvertimeDataList)
         {
             @* Console.WriteLine(JsonSerializer.Serialize(item)); *@

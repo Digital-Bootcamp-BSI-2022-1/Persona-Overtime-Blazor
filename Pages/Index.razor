@@ -59,7 +59,7 @@ else
                             <div class="col">
                                 <div class="card__a">
                                     <div class="card-header">Need Approval</div>
-                                    <h3>@OvertimestatisticData.data.need_approval</h3>
+                                    <h3>@(OvertimestatisticData.data.need_approval+OvertimestatisticData.data.settlement_approval)</h3>
                                 </div>
                             </div>
                             <div class="col">
@@ -140,7 +140,8 @@ else
     private async Task GetOvertimeStatistic()
     {
         isLoading = true;
-        OvertimestatisticData = await OvertimeService.GetOvertimeStatistic();
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        OvertimestatisticData = await OvertimeService.GetOvertimeStatistic(token.Value);
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimestatisticData));
         Console.WriteLine("TEST");
         isLoading = false;
