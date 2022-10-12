@@ -3,6 +3,7 @@
 @using Services;
 @using System.Text.Json
 @inject IOvertimeService OvertimeService;
+@inject IUserDetailService UserDetailService;
 @inject NavigationManager UriHelper;
 
 <PageTitle>Overtime Detail @id</PageTitle>
@@ -33,7 +34,126 @@ else
 }
 else
 {
-<div class="row">
+@if (User.grade != "VIA")
+{
+    <div class="row">
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Start Date*</p>
+            </div>
+            <div class="col-sm-6">
+                <p>End Date*</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+            <span class="oi oi-calendar" aria-hidden="true"></span> @OvertimeByIdSuperior[0].start_date.ToString("MMMM, dd yyyy")
+            <hr size="3px"/>
+            </div>
+            <div class="col-sm-6">
+            <span class="oi oi-calendar" aria-hidden="true"></span> @OvertimeByIdSuperior[0].end_date.ToString("MMMM, dd yyyy")
+            <hr size="3px"/>
+            </div>
+        </div>
+        </div>
+    </div>
+        <br>
+
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Start Time*</p>
+            </div>
+            <div class="col-sm-6">
+                <p>End Time*</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+            <span class="oi oi-clock" aria-hidden="true"></span> @OvertimeByIdSuperior[0].start_time.ToString("HH:mm:ss")
+            <hr size="3px"/>
+            </div>
+            <div class="col-sm-6">
+            <span class="oi oi-clock" aria-hidden="true"></span> @OvertimeByIdSuperior[0].end_time.ToString("HH:mm:ss")
+            <hr size="3px"/>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <p>Remarks</p>
+        </div>
+
+        <div class="col-sm-6">
+        <p>@OvertimeByIdSuperior[0].remarks</p>
+            <hr size="3px"/>
+        <br>
+
+            <div class="col-sm-6">
+            <p>Attachment</p>
+        </div>
+
+        <div class="col-sm-12">
+            @if (OvertimeByIdSuperior[0].attachment is null)
+            {
+                <p style="color: red;">No Data*</p>
+            }
+            else
+            {<img src=@OvertimeByIdSuperior[0].attachment alt="Attachment File" width="300" height="300">}
+            <br><br>
+        @if (OvertimeByIdSuperior[0].status == 1)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>}
+        
+        else if (OvertimeByIdSuperior[0].status == 2 || OvertimeByIdSuperior[0].status == 4 || OvertimeByIdSuperior[0].status ==5)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Approved Date : @OvertimeByIdSuperior[0].approved_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeByIdSuperior[0].status == 3)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeByIdSuperior[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeByIdSuperior[0].status == 6)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Approved Date : @OvertimeByIdSuperior[0].approved_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeByIdSuperior[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeByIdSuperior[0].status == 9)
+        {<p>Request Date : @OvertimeByIdSuperior[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeByIdSuperior[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+        
+        </div>
+        <br>
+        @if (@OvertimeByIdSuperior[0].status == 1)
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="btn btn-success"  type="button" @onclick="() => Navigate(OvertimeByIdSuperior[0].id)">Approve</div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeByIdSuperior[0].id)">Reject</div>
+                </div>
+            </div>
+        }
+        
+        else if (@OvertimeByIdSuperior[0].status == 4)
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="btn btn-success"  type="button" @onclick="() => Navigate(OvertimeByIdSuperior[0].id)">Approve</div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="btn btn-warning"  type="button" @onclick="() => Navigate(OvertimeByIdSuperior[0].id)">Revise</div>
+                </div>
+            </div>
+        }
+    </div>
+    </div>
+}
+else
+{
+    <div class="row">
     <div class="col-sm-6">
         <div class="row">
             <div class="col-sm-6">
@@ -107,6 +227,20 @@ else
         else if (OvertimeById[0].status == 2 || OvertimeById[0].status == 4 || OvertimeById[0].status ==5)
         {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
         <p>Approved Date : @OvertimeById[0].approved_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeById[0].status == 3)
+        {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeById[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeById[0].status == 6)
+        {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Approved Date : @OvertimeById[0].approved_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeById[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
+        else if (OvertimeById[0].status == 9)
+        {<p>Request Date : @OvertimeById[0].request_date.ToString("MMMM, dd yyyy")</p>
+        <p>Completed Date : @OvertimeById[0].completed_date.ToString("MMMM, dd yyyy")</p>}
+
         </div>
         <br>
         @if (@OvertimeById[0].status == 1)
@@ -117,17 +251,22 @@ else
         else if (@OvertimeById[0].status == 2 || @OvertimeById[0].status == 5)
         {
             <div class="row">
-                <div class="col-sm-3">
-                    <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Cancel</div>
-                </div>
-
-                <div class="col-sm-8">
+                <div class="col-sm-6">
                     <div class="btn btn-success"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Submit Settlement</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Cancel</div>
                 </div>
             </div>
         }
+
+        else if (@OvertimeById[0].status == 4)
+        {
+            <div class="btn btn-danger"  type="button" @onclick="() => Navigate(OvertimeById[0].id)">Cancel</div>
+        }
     </div>
     </div>
+}
 }
     }}
 
@@ -138,6 +277,8 @@ else
     [Parameter]
     public string id { get; set; }
     public List<OvertimeDTO> OvertimeById { get; set; } = new List<OvertimeDTO>();
+    public List<OvertimeDTO> OvertimeByIdSuperior { get; set; } = new List<OvertimeDTO>();
+    public UserDTO User { get; set; } = new UserDTO();
 
     protected override async Task OnInitializedAsync()
     {
@@ -145,7 +286,9 @@ else
         var result = await ProtectedSessionStore.GetAsync<string>("token");
         if (result.Success)
         {
+            await GetUserDetail();
             await GetOvertimeById(Int32.Parse(id));
+            await GetOvertimeByIdSuperior(Int32.Parse(id));
             isLoggedIn = true;
         }
         else
@@ -163,12 +306,31 @@ else
         var token = await ProtectedSessionStore.GetAsync<string>("token");
         OvertimeById = await OvertimeService.GetOvertimeById(id, token.Value);
 
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeById[0]));
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeById));
+        isLoading = false;
+    }
+
+    private async Task GetOvertimeByIdSuperior(int id)
+    {
+        isLoading = true;
+
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        OvertimeByIdSuperior = await OvertimeService.GetOvertimeByIdSuperior(id, token.Value);
+
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeByIdSuperior));
         isLoading = false;
     }
 
     private void Navigate(int id)
     {
        UriHelper.NavigateTo("/overtime/detail/" + id);
+    }
+
+    private async Task GetUserDetail()
+    {
+        isLoading = true;
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        User = await UserDetailService.GetUserDetail(token.Value);
+        isLoading = false;
     }
 }

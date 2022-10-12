@@ -17,6 +17,12 @@ namespace PersonaOvertimeWeb.Services
             return await _httpClient.GetFromJsonAsync<List<OvertimeDTO>>("/overtime");
         }
 
+        public async Task<List<OvertimeDTO>> GetAllOvertimeListSuperior(string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            return await _httpClient.GetFromJsonAsync<List<OvertimeDTO>>("/overtime/superior");
+        }
+
         public async Task<SuccessResponse<OvertimeStatistic>> GetOvertimeStatistic(string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -40,6 +46,11 @@ namespace PersonaOvertimeWeb.Services
         {
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             return await _httpClient.GetFromJsonAsync<List<OvertimeDTO>>("/overtime/" + id);
+        }
+        public async Task<List<OvertimeDTO>> GetOvertimeByIdSuperior(int id, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            return await _httpClient.GetFromJsonAsync<List<OvertimeDTO>>("/overtime/superior/" + id);
         }
     }
 }

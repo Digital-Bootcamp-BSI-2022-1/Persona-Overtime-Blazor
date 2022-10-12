@@ -3,6 +3,8 @@
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject IOvertimeService OvertimeService;
+@inject IUserDetailService UserDetailService;
+
 @page "/"
 
 <PageTitle>Home</PageTitle>
@@ -50,7 +52,44 @@ else
             <p>Overtime Activity</p>
 
             <br><br>
-
+            @if (User.grade != "VIA")
+            {
+                @if (OvertimestatisticDataSup != null)
+            {
+                <div class="text-center" style="font-family: system-ui;">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card__a">
+                                    <div class="card-header">Need Approval</div>
+                                    <h3>@(OvertimestatisticDataSup.data.need_approval + OvertimestatisticData.data.settlement_approval)</h3>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card__a">
+                                    <div class="card-header">Approved</div>
+                                    <h3>@(OvertimestatisticDataSup.data.approved + OvertimestatisticData.data.revise)</h3>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card__a">
+                                    <div class="card-header">Rejected</div>
+                                    <h3>@OvertimestatisticDataSup.data.rejected</h3>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card__a">
+                                    <div class="card-header">Completed</div>
+                                    <h3>@OvertimestatisticDataSup.data.completed</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            }
+            else
+            {
             @if (OvertimestatisticData != null)
             {
                 <div class="text-center" style="font-family: system-ui;">
@@ -59,37 +98,19 @@ else
                             <div class="col">
                                 <div class="card__a">
                                     <div class="card-header">Need Approval</div>
-                                    <h3>@(OvertimestatisticData.data.need_approval+OvertimestatisticData.data.settlement_approval)</h3>
+                                    <h3>@(OvertimestatisticData.data.need_approval + OvertimestatisticData.data.settlement_approval)</h3>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card__a">
                                     <div class="card-header">Approved</div>
-                                    <h3>@OvertimestatisticData.data.approved</h3>
+                                    <h3>@(OvertimestatisticData.data.approved + OvertimestatisticData.data.revise)</h3>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card__a">
                                     <div class="card-header">Rejected</div>
                                     <h3>@OvertimestatisticData.data.rejected</h3>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="card__a">
-                                    <div class="card-header">Settlement Approval</div>
-                                    <h3>@OvertimestatisticData.data.settlement_approval</h3>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card__a">
-                                    <div class="card-header">Revise</div>
-                                    <h3>@OvertimestatisticData.data.revise</h3>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card__a">
-                                    <div class="card-header">Cancelled</div>
-                                    <h3>@OvertimestatisticData.data.cancelled</h3>
                                 </div>
                             </div>
                             <div class="col">
@@ -102,7 +123,7 @@ else
                     </div>
                 </div>
             }
-
+        }
             <br><br><br><br><br><br>
             <SurveyPrompt Title="How is Blazor working for you?" />
         }
@@ -122,7 +143,9 @@ else
         if (result.Success)
         {
             isLoggedIn = true;
+            await GetUserDetail();
             await GetOvertimeStatistic();
+            await GetOvertimeStatisticSuperior();
             isLoadingPage = false;
         }
         else
@@ -135,6 +158,8 @@ else
     DateOnly date_now = DateOnly.FromDateTime(DateTime.Now);
 
     public SuccessResponse<OvertimeStatistic> OvertimestatisticData { get; set; } = new();
+    public SuccessResponse<OvertimeStatistic> OvertimestatisticDataSup { get; set; } = new();
+    public UserDTO User { get; set; } = new UserDTO();
 
 
     private async Task GetOvertimeStatistic()
@@ -143,8 +168,23 @@ else
         var token = await ProtectedSessionStore.GetAsync<string>("token");
         OvertimestatisticData = await OvertimeService.GetOvertimeStatistic(token.Value);
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimestatisticData));
-        Console.WriteLine("TEST");
         isLoading = false;
     }
 
+    private async Task GetOvertimeStatisticSuperior()
+    {
+        isLoading = true;
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        OvertimestatisticDataSup = await OvertimeService.GetOvertimeStatisticSuperior(token.Value);
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimestatisticData));
+        isLoading = false;
+    }
+
+    private async Task GetUserDetail()
+    {
+        isLoading = true;
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        User = await UserDetailService.GetUserDetail(token.Value);
+        isLoading = false;
+    }
 }

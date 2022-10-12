@@ -4,6 +4,7 @@
 @using Services;
 @using System.Text.Json
 @inject IOvertimeService OvertimeService;
+@inject IUserDetailService UserDetailService;
 @inject NavigationManager UriHelper;
 
 <PageTitle>Overtime Submission - Persona</PageTitle>
@@ -37,7 +38,30 @@ else
 
 <div class="container">
     <div class="row"> 
-@foreach (var item in OvertimeDataList)
+
+@if (User.grade != "VIA")
+{
+    @foreach (var item in OvertimeDataListSup)
+{
+    if (item.status == 1 || item.status == 4)
+    {          
+    <div class="col-3" style="height : 220px; font-family: system-ui;">
+        <div class="card"  type="button" @onclick="() => Navigate(item.id)">
+        <div class="text-center">
+            <div class="card-header" style="background-color:#3ea7c9f2; height : 40px"><b style="color:#102060;">@item.status_text</b></div>
+                <h4 class="card-title" style="height : 40px;">@item.user.name</h4>
+                <p style="font-size: 14px;">@item.start_date.ToString("MMMM, dd yyyy")</p>
+                <p style="font-size: 14px;">@item.start_time.ToString("HH:mm:ss") - @item.end_time.ToString("HH:mm:ss")</p>
+                <p style="font-size: 14px;">Request Date: @item.request_date.ToString("MMMM, dd yyyy")</p>
+            </div>
+        </div>
+    </div>
+    }     
+}
+}
+else
+{
+    @foreach (var item in OvertimeDataList)
 {
     if (item.status == 1 || item.status == 2 || item.status == 4 || item.status == 5)
     {          
@@ -46,14 +70,16 @@ else
         <div class="text-center">
             <div class="card-header" style="background-color:#3ea7c9f2; height : 40px"><b style="color:#102060;">@item.status_text</b></div>
                 <h4 class="card-title" style="height : 40px;">@item.user.name</h4>
-                <p>@item.start_date.ToString("MMMM, dd yyyy")</p>
-                <p>@item.start_time.ToString("HH:mm:ss") - @item.end_time.ToString("HH:mm:ss")</p>
-                <p>Request Date: @item.request_date.ToString("MMMM, dd yyyy")</p>
+                <p style="font-size: 14px;">@item.start_date.ToString("MMMM, dd yyyy")</p>
+                <p style="font-size: 14px;">@item.start_time.ToString("HH:mm:ss") - @item.end_time.ToString("HH:mm:ss")</p>
+                <p style="font-size: 14px;">Request Date: @item.request_date.ToString("MMMM, dd yyyy")</p>
             </div>
         </div>
     </div>
     }     
 }
+}
+
     </div>
 </div>
 }
@@ -67,14 +93,20 @@ else
     [Parameter]
     public List<OvertimeDTO> OvertimeDataList { get; set; } = new();
 
+    [Parameter]
+    public List<OvertimeDTO> OvertimeDataListSup { get; set; } = new();
+    public UserDTO User { get; set; } = new UserDTO();
+
     protected override async Task OnInitializedAsync()
     {
         isLoadingPage = true;
         var result = await ProtectedSessionStore.GetAsync<string>("token");
         if (result.Success)
         {
-            await GetAllOvertimeList();
             isLoggedIn = true;
+            await GetUserDetail();
+            await GetAllOvertimeList();
+            await GetAllOvertimeListSuperior();
         }
         else
         {
@@ -91,11 +123,28 @@ else
         var token = await ProtectedSessionStore.GetAsync<string>("token");
         OvertimeDataList = await OvertimeService.GetAllOvertimeList(token.Value);
         foreach (var item in OvertimeDataList)
-        {
-            @* Console.WriteLine(JsonSerializer.Serialize(item)); *@
-        }
-        @* Console.WriteLine(JsonSerializer.Serialize(OvertimeDataList)); *@
+        {}
+        
+        isLoading = false;
+    }
 
+    private async Task GetAllOvertimeListSuperior()
+    {
+        isLoading = true;
+
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        OvertimeDataListSup = await OvertimeService.GetAllOvertimeListSuperior(token.Value);
+        foreach (var item in OvertimeDataListSup)
+        {}
+        
+        isLoading = false;
+    }
+
+    private async Task GetUserDetail()
+    {
+        isLoading = true;
+        var token = await ProtectedSessionStore.GetAsync<string>("token");
+        User = await UserDetailService.GetUserDetail(token.Value);
         isLoading = false;
     }
 
