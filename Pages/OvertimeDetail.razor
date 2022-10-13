@@ -103,7 +103,12 @@ else
                         <p>Attachment</p>
                     </div>
                     <div class="col-sm-12">
-                        <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
+                        @if (Attachment.Count() == 0)
+                        {<p style="color: red;">*No Data</p>}
+                        else
+                        {
+                            <img src=@AttachmentFile width="300" height="300" disabled>
+                        }
                         <br><br>
 
                     <div class="col-sm-6">
@@ -163,7 +168,7 @@ else
                         {
                             <div class="flex" style="display:flex;justify-content:center;align-items:center;">
                                 <div class="col-sm-4">
-                                <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(2)">
+                                <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(6)">
                                 APPROVE
                                 </button>
 
@@ -227,7 +232,12 @@ else
                     </div>
                     <br>
                     <div class="col-sm-12">
-                        <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
+                        @if (Attachment.Count() == 0)
+                        {<p style="color: red;">*No Data</p>}
+                        else
+                        {
+                            <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
+                        }
                         <br><br>
                         
                         <div class="col-sm-6">
@@ -311,7 +321,12 @@ else
                         <br>
                         <div class="col-sm-6">
                             <p>Attachment</p>
-                            <img src=@AttachmentFile alt="No Attachment" width="300" height="300">
+                            @if (Attachment.Count() == 0)
+                            {<p style="color: red;">*No Data</p>}
+                            else
+                            {
+                                <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
+                            }
                             <br><br><br>
 
                             <p>Upload Attachment</p>
@@ -478,7 +493,32 @@ else
                 Console.WriteLine(responseMessage);
                 if (ResponsePost.IsSuccessStatusCode)
                 {
-                    OpenDialog(title: "Request Success", message: "Successfully submitted request overtime", type: Dialog.Category.Okay);
+                    
+                    if(Status == 2)
+                    {
+                        OpenDialog(title: "Request Success", message: "Successfully approve overtime request", type: Dialog.Category.Okay);
+                    }
+                    else if (Status == 3)
+                    {
+                        OpenDialog(title: "Request Success", message: "Successfully rejecting overtime request", type: Dialog.Category.Okay);
+                    }
+                    else if (Status == 4)
+                    {
+                        OpenDialog(title: "Request Success", message: "Successfully submit overtime settlement", type: Dialog.Category.Okay);
+                    }
+                    else if (Status == 5)
+                    {
+                        OpenDialog(title: "Request Success", message: "Successfully requesting revisions for overtime settlement", type: Dialog.Category.Okay);
+                    }
+                    else if (Status == 6)
+                    {
+                        OpenDialog(title: "Request Success", message: "Successfully approve overtime settlement", type: Dialog.Category.Okay);
+                    }
+                    else if (Status == 9)
+                    {
+                        OpenDialog(title: "Request Success", message: "Successfully cancelled this overtime", type: Dialog.Category.Okay);
+                    }
+                    
                 }
                 else
                 {
@@ -563,6 +603,7 @@ else
         }
         DialogIsOpen = false;
     }
+
     private void NavigateToSubmission()
     {
         Navigation.NavigateTo("/overtime/submission");
