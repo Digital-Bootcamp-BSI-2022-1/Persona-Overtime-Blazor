@@ -22,7 +22,7 @@
     body div {
         width: 100%;
     }
-    
+
     #logo img {
         margin-left: auto;
         margin-right: auto;
@@ -32,6 +32,12 @@
     #login-title {
         color: white;
         font-size: 20px;
+        font-weight: bold;
+    }
+
+    #login-button{
+        width: 40%;
+        font-weight: bold;
     }
 </style>
 
@@ -42,7 +48,7 @@
 
 <body>
     @* <div class="page"> *@
-    <div class="row" style="background-color: rgba(250, 250, 250, 1);">
+    <div class="row" style="background-color: rgba(250, 250, 250, 1); margin: 0;">
         <div class="col-sm-6" style="text-align: center; height: 90vh;">
             <div id="logo" class="container"
                 style="width:100%; height:100%; display:flex;justify-content:center;align-items:center;">
@@ -56,17 +62,22 @@
                 <br><br>
                 <div class="inputs">
                     <div style="display:flex;justify-content:center;align-items:center;">
-                        <input type="text" placeholder="Username" @bind="username" class="form-control"
-                            style="width: 50%;">
+                        <div class="form-floating mb-3" style="width: 50%;">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Username" @bind="username">
+                            <label for="floatingInput">Username</label>
+                        </div>
                     </div>
-                    <br>
                     <div style="display:flex;justify-content:center;align-items:center;">
-                        <input type="password" placeholder="Password" @bind="password" class="form-control"
-                            style="width: 50%;" id="loginPassword">
+                        <div class="form-floating mb-3" style="width: 50%;">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" @bind="password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
                     </div>
                 </div>
-                <br><br>
-                <button @onclick="PostLogin" class="btn btn-light">LOGIN</button>
+                <br>
+                <div>
+                    <button @onclick="PostLogin" class="btn btn-light" id="login-button">LOGIN</button>
+                </div>
                 <br><br>
             </div>
         </div>
@@ -83,6 +94,26 @@
 </html>
 
 @code {
+    private bool isLoadingPage = true;
+    private bool isLoggedIn = false;
+    private bool isLoading = true;
+    protected override async Task OnInitializedAsync()
+    {
+        isLoadingPage = true;
+        var result = await ProtectedSessionStore.GetAsync<string>("token");
+        if (result.Success)
+        {
+            isLoggedIn = true;
+            NavigateToHome();
+            isLoadingPage = false;
+        }
+        else
+        {
+            isLoggedIn = false;
+            isLoadingPage = false;
+        }
+    }
+
     private string? username;
     private string? password;
     public HttpResponseMessage ResponseLogin { get; set; } = new();

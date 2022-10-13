@@ -1,6 +1,5 @@
 @page "/overtime/request"
 
-@using BIF = BlazorInputFile
 @using Models
 @using PersonaOvertimeWeb.Components
 @using Services
@@ -17,14 +16,20 @@
 @inject ILogger<OvertimeRequest> Logger
 @inject IWebHostEnvironment Environment
 
+<style>
+    span.required {
+        color: red;
+    }
+</style>
+
 <PageTitle>Overtime Request - Persona</PageTitle>
 
 @if (isLoadingPage)
 {
     <div style="height: 80vh;">
-    <br><br><br>
-    <p>Loading Page...</p>
-    <br><br><br>
+        <br><br><br>
+        <p>Loading Page...</p>
+        <br><br><br>
     </div>
 }
 else
@@ -32,70 +37,60 @@ else
     @if (!isLoggedIn)
     {
         <div style="height: 80vh;">
-        <br><br><br>
-        <p>Please Login</p>
-        <br><br><br>
+            <br><br><br>
+            <p>Please Login</p>
+            <br><br><br>
         </div>
     }
     else
     {
-        <h3>Overtime Request Form</h3>
-        <br>
-        <div class="row">
-            <div class="col-sm-6">
-                <p>Start Date*</p>
-                <input id="StartDate" type="date" @bind="StartDate">
+        <div class="container" style="padding: 20px;">
+            <h3>Overtime Request Form</h3>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p>Start Date<span class="required">*</span></p>
+                    <div class="mb-3" style="width: 50%;">
+                        <input type="date" class="form-control" @bind="StartDate">
+                    </div>
 
-                <br><br>
+                    <p>Start Time (Plan)<span class="required">*</span></p>
+                    <div class="mb-3" style="width: 50%;">
+                        <input type="time" class="form-control" @bind="StartTime">
+                    </div>
 
-                <p>Start Time(Plan)*</p>
-                <input type="time" placeholder="Select Time" @bind="StartTime">
+                    <p>Attachment</p>
+                    <div class="mb-3" style="width: 80%;">
+                        <InputFile OnChange="@LoadFiles" class="form-control" />
+                    </div>
 
-                <br><br>
+                    <p>Remarks</p>
+                    <div class="mb-3" style="width: 80%;">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks"></textarea>
+                    </div>
 
-                <p>Upload Attachment</p>
-                @* <input type="file"> *@
-                @* <InputFile OnChange="HandleFileSelected" /> *@
-                @* <BlazorInputFile.InputFile OnChange="HandleFileSelected" /> *@
-                <InputFile OnChange="@LoadFiles" />
-                @* @if (Attachment.Count != 0)
-                {
-                    <br><br>
-                    <p>Name: @Attachment[0].Name</p>
-                    <p>Content type: @Attachment[0].ContentType</p>
-                } *@
+                    <br>
 
-                <br><br>
+                    <p>Request Date: @RequestDate.ToString("MMMM dd, yyyy")</p>
+                </div>
+                <div class="col-sm-6">
+                    <p>End Date<span class="required">*</span></p>
+                    <div class="mb-3" style="width: 50%;">
+                        <input type="date" class="form-control" @bind="EndDate">
+                    </div>
 
-                <p>Remarks</p>
-                <input type="text" placeholder="" @bind="Remarks">
-
-                <br><br>
-
-                <p>Request Date: </p>
+                    <p>End Time (Plan)<span class="required">*</span></p>
+                    <div class="mb-3" style="width: 50%;">
+                        <input type="time" class="form-control" @bind="EndTime">
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <p>End Date*</p>
-                <input type="date" placeholder="Select Date" @bind="EndDate">
-
-                <br><br>
-
-                <p>End Time(Plan)*</p>
-                <input type="time" placeholder="Select Time" @bind="EndTime">
+            <br>
+            <div class="mb-3" style="display:flex;justify-content:center;align-items:center;">
+                <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 30%" @onclick="PostOvertimeRequest">
+                    SUBMIT
+                </button>
             </div>
-        </div>
-        <br>
-        <div class="row">
-            <button class="btn" style="background-color: #3ea7c9f2; color: #ffffff" @onclick="PostOvertimeRequest">
-                @if (isLoading)
-                {
-                    <p>Submitting...</p>
-                }
-                else
-                {
-                    <p>Submit</p>
-                }
-            </button>
         </div>
     }
 }
@@ -148,6 +143,11 @@ else
     second: 0
     );
     String Remarks = "";
+    DateOnly RequestDate = new DateOnly(
+    year: DateTime.Now.Year,
+    month: DateTime.Now.Month,
+    day: DateTime.Now.Day
+    );
 
     private List<IBrowserFile> Attachment = new();
     private long maxFileSize = 1024 * 3000;
