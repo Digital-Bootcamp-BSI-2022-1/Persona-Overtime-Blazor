@@ -230,7 +230,6 @@ else
                     <div class="col-sm-6">
                         <p>Attachment</p>
                     </div>
-                    <br>
                     <div class="col-sm-12">
                         @if (Attachment.Count() == 0)
                         {<p style="color: red;">*No Data</p>}
@@ -238,7 +237,7 @@ else
                         {
                             <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
                         }
-                        <br><br>
+                        <br>
                         
                         <div class="col-sm-6">
                             <p>Remarks</p>
@@ -345,7 +344,9 @@ else
                             <br>
 
                         
+                        
                         <div class="flex" style="display:flex;justify-content:center;align-items:center;">
+                            <div class="col-sm-4">
                             <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(4)">
                             SUBMIT
                             </button>
@@ -353,6 +354,7 @@ else
                             <button class="btn" style="background-color: #CA000E; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(9)">
                             CANCEL
                             </button>
+                        </div>
                         </div>
                 }
             </div>
