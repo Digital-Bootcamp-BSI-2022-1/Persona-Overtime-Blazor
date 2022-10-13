@@ -7,6 +7,29 @@
 @inject IUserDetailService UserDetailService;
 @inject NavigationManager UriHelper;
 
+<style>
+    .spanner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #2a2a2a55;
+        width: 100%;
+        height: 100%;
+        display: block;
+        text-align: center;
+        color: #FFF;
+        @*transform:translateY(-50%);*@@*z-index:1000;*@visibility: hidden;
+    }
+
+    .overlay {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        visibility: hidden;
+    }
+</style>
+
 <PageTitle>Overtime Submission - Persona</PageTitle>
 
 @if (isLoadingPage)
@@ -29,7 +52,7 @@ else
     }
     else
     {
-        <div class="container">
+        <div class="container" style="padding: 20px;">
             <h3>Overtime Submission Data</h3>
             <br>
             @if (isLoading)
@@ -48,18 +71,42 @@ else
                             {
                                 if (item.status == 1 || item.status == 4)
                                 {
-                                    <div class="col-3" style="height : 220px; font-family: system-ui;">
-                                        <div class="card" type="button" @onclick="() => Navigate(item.id)">
+                                    <div class="col-4">
+                                        <div class="card" style="border-radius: 10px;" type="button" @onclick="() => Navigate(item.id)">
                                             <div class="text-center">
-                                                <div class="card-header" style="background-color:#3ea7c9f2; height : 40px"><b
-                                style="color:#102060;">@item.status_text</b></div>
-                                                <h4 class="card-title" style="height : 40px;">@item.user.name</h4>
-                                                <p style="font-size: 14px;">@item.start_date.ToString("MMMM, dd yyyy")</p>
-                                                <p style="font-size: 14px;">@item.start_time.ToString("HH:mm:ss") -
-                                                    @item.end_time.ToString("HH:mm:ss")</p>
-                                                <p style="font-size: 14px;">Request Date: @item.request_date.ToString("MMMM, dd yyyy")</p>
+                                                <div class="card-header" style="background-color:#3ea7c9f2; border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                                                    <b style="color: white;">@item.status_text</b>
+                                                </div>
+                                                <div class="card-body" style="padding:0;">
+                                                    <div class="row" style="display:flex;justify-content:center;align-items:center;padding:0;margin:0;">
+                                                        <div class="col-2" style="display:flex;justify-content:center;align-items:center;padding:0;margin:0;">
+                                                            <div style="background-color: #0483BA; color: white; border-radius: 8px; width: 80%; font-size: 14px;">
+                                                                <div>
+                                                                    @item.start_date.ToString("dd")
+                                                                </div>
+                                                                <div>
+                                                                    @item.start_date.ToString("MMM")
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-10" style="text-align: start; font-size: 14px;">
+                                                            <br>
+                                                            <div>
+                                                                @item.start_time.ToString("HH:mm:ss") - @item.end_time.ToString("HH:mm:ss")
+                                                            </div>
+                                                            <div>
+                                                                Submission Date: @item.request_date.ToString("MMM, dd yyyy")
+                                                            </div>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer" style="border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+                                                    <b>@item.user.name</b>
+                                                </div>
                                             </div>
                                         </div>
+                                        <br>
                                     </div>
                                 }
                             }
@@ -89,6 +136,13 @@ else
                     </div>
                 </div>
             }
+        </div>
+        <div class="overlay"></div>
+        <div class="spanner" style="display:flex;justify-content:center;align-items:center;">
+            <div>
+                <div class="spinner-border"></div>
+                <p>Loading</p>
+            </div>
         </div>
     }
 }
