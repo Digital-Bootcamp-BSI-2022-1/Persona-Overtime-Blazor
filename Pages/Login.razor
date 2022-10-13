@@ -149,6 +149,7 @@
     LoginRequest request = new LoginRequest();
     String responseMessage = "";
     LoginResponse loginMessage = new LoginResponse();
+    Response popupMessage = new Response();
 
     private async Task PostLogin()
     {
@@ -175,8 +176,9 @@
                 }
                 else
                 {
+                    popupMessage = JsonSerializer.Deserialize<Response>(responseMessage);
                     isLoading = false;
-                    OpenDialog(title: "Login Error", message: responseMessage, type: Dialog.Category.Null);
+                    OpenDialog(title: "Login Error", message: popupMessage.message, type: Dialog.Category.Null);
                 }
             }
             catch (System.Exception e)
