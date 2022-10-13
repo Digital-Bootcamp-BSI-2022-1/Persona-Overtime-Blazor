@@ -17,11 +17,11 @@
                         break;
                     case Category.SaveNot:
                         <button type="button" class="btn btn-primary" @onclick=@Ok>Yes</button>
-                        <button type="button" class="btn btn-warning" @onclick="@Cancel">No</button>
+                        <button type="button" class="btn btn-danger" @onclick="@Cancel">No</button>
                         break;
                     case Category.DeleteNot:
                         <button type="button" class="btn btn-danger" @onclick=@Ok>Delete</button>
-                        <button type="button" class="btn btn-warning" @onclick="@Cancel">Don't Delete</button>
+                        <button type="button" class="btn btn-danger" @onclick="@Cancel">Don't Delete</button>
                         break;
                     case Category.Null:
                         <button type="button" class="btn btn-primary" @onclick=@Cancel>OK</button>

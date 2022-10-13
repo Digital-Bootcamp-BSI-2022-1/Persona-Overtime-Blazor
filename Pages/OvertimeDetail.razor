@@ -17,19 +17,55 @@
 @inject IWebHostEnvironment Environment
 
 <style>
+    .spanner_transparent {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        text-align: center;
+        color: #0582AE;
+        visibility: visible;
+    }
+
+    .spanner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #2a2a2a55;
+        width: 100%;
+        height: 100%;
+        display: block;
+        text-align: center;
+        color: #FFF;
+        visibility: visible;
+    }
+
+    .overlay {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        visibility: visible;
+    }
+
     span.required {
-        color: red;
+        color: #CA000E;
     }
 </style>
 
-<PageTitle>Overtime Detail @id</PageTitle>
+<PageTitle>Overtime Detail - Persona</PageTitle>
 
 @if (isLoadingPage)
 {
     <div style="height: 80vh;">
-        <br><br><br>
-        <p>Loading Page...</p>
-        <br><br><br>
+        <div class="spanner_transparent" style="display:flex;justify-content:center;align-items:center;">
+            <div>
+                <div class="spinner-border"></div>
+                <p>Loading</p>
+            </div>
+        </div>
     </div>
 }
 else
@@ -37,90 +73,217 @@ else
     @if (!isLoggedIn)
     {
         <div style="height: 80vh;">
-            <br><br><br>
-            <p>Please Login</p>
-            <br><br><br>
+            <div class="spanner_transparent" style="display:flex;justify-content:center;align-items:center;">
+                <div>
+                    <div><span class="oi oi-circle-x" aria-hidden="true" style="font-size: 30px; color: #CA000E;"></span></div>
+                    <p>Please <a href="/login"><b>Login</b></a></p>
+                </div>
+            </div>
         </div>
     }
     else
     {
-        @if (isLoading)
+        @if (User.grade != "VIA")
         {
-            <br><br><br>
-            <p>Loading Overtime Data...</p>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="container" style="padding: 20px;">
+                @if (Status == 1)
+                {
+                    <h3>Overtime Request Detail</h3>
+                }
+                else if (Status == 4)
+                {
+                    <h3>Overtime Settlement Detail</h3>
+                }
+                else
+                {
+                    <h3>Overtime Detail</h3>
+                }
+                <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>Requester</p>
+                        <div class="mb-3" style="width: 50%;">
+                            <input type="text" class="form-control" @bind="Requester" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>Start Date<span class="required">*</span></p>
+                        <div class="mb-3" style="width: 50%;">
+                            <input type="date" class="form-control" @bind="StartDate" disabled>
+                        </div>
+
+                        @if (Status == 1)
+                        {
+                            <p>Start Time (Plan)<span class="required">*</span></p>
+                        }
+                        else if (Status == 4)
+                        {
+                            <p>Start Time (Actual)<span class="required">*</span></p>
+                        }
+                        <div class="mb-3" style="width: 50%;">
+                            <input type="time" class="form-control" @bind="StartTime" disabled>
+                        </div>
+
+                        @if (AttachmentFile != null)
+                        {
+                            <p>Attachment</p>
+                            <div class="mb-3" style="height: 30vh; max-width: 90%">
+                                <img src=@AttachmentFile alt="Attachment Image" style="height: 100%;" disabled>
+                            </div>
+                        }
+
+                        <p>Remarks</p>
+                        <div class="mb-3" style="width: 80%;">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks"
+                    disabled></textarea>
+                        </div>
+
+                        <br>
+
+                        @if (Status == 1)
+                        {
+                            <p>Request Date : @RequestDate.ToString("MMMM, dd yyyy")</p>
+                        }
+
+                        else if (Status == 2 || Status == 4 || Status == 5)
+                        {
+                            <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
+                            <p>Approved Date: @ApprovedDate.ToString("MMMM, dd yyyy")</p>
+                        }
+
+                        else if (Status == 3)
+                        {
+                            <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
+                            <p>Completed Date: @CompletedDate.ToString("MMMM, dd yyyy")</p>
+                        }
+
+                        else if (Status == 6)
+                        {
+                            <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
+                            <p>Approved Date: @ApprovedDate.ToString("MMMM, dd yyyy")</p>
+                            <p>Completed Date: @CompletedDate.ToString("MMMM, dd yyyy")</p>
+                        }
+
+                        else if (Status == 9)
+                        {
+                            <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
+                            <p>Completed Date: @CompletedDate.ToString("MMMM, dd yyyy")</p>
+                        }
+                    </div>
+
+                    <div class="col-sm-6">
+                        <p>End Date<span class="required">*</span></p>
+                        <div class="mb-3" style="width: 50%;">
+                            <input type="date" class="form-control" @bind="EndDate" disabled>
+                        </div>
+
+                        @if (Status == 1)
+                        {
+                            <p>End Time (Plan)<span class="required">*</span></p>
+                        }
+                        else if (Status == 4)
+                        {
+                            <p>End Time (Actual)<span class="required">*</span></p>
+                        }
+                        <div class="mb-3" style="width: 50%;">
+                            <input type="time" class="form-control" @bind="EndTime" disabled>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                @if (Status == 1)
+                {
+                    <div class="mb-3" style="display:flex;justify-content:center;align-items:center;">
+                        <button class="btn" style="background-color: #0483BA; color: white; width: 30%; margin: 4px 2px;"
+            @onclick="() => PostOvertimeStatus(2)">
+                            APPROVE
+                        </button>
+
+                        <button class="btn" style="background-color: #CA000E; color: white; width: 30%; margin: 4px 2px;"
+            @onclick="() => DialogReject()">
+                            REJECT
+                        </button>
+                    </div>
+                }
+
+                else if (Status == 4)
+                {
+                    <div class="mb-3" style="display:flex;justify-content:center;align-items:center;">
+                        <button class="btn" style="background-color: #0483BA; color: white; width: 30%; margin: 4px 2px;"
+            @onclick="() => PostOvertimeStatus(6)">
+                            APPROVE
+                        </button>
+
+                        <button class="btn" style="background-color: #CA000E; color: white; width: 30%; margin: 4px 2px;"
+            @onclick="() => PostOvertimeStatus(5)">
+                            REVISE
+                        </button>
+                    </div>
+                }
+            </div>
         }
         else
         {
-            @if (User.grade != "VIA")
-            {
-                <div class="container" style="padding: 20px;">
-                    @if (Status == 1)
-                    {<h3>Overtime Request Detail</h3>}
-                    else if (Status == 4)
-                    {<h3>Overtime Settlement Detail</h3>}
+            <div class="container" style="padding: 20px;">
+                @if (Status == 1 || Status == 3 || Status == 4 || Status == 6 || Status == 9)
+                {
+                    @if (Status == 1 || Status == 3)
+                    {
+                        <h3>Overtime Request Detail</h3>
+                    }
+                    else if (Status == 9)
+                    {
+                        <h3>Overtime Detail</h3>
+                    }
+                    else if (Status == 5 || Status == 6)
+                    {
+                        <h3>Overtime Realization Detail</h3>
+                    }
+
                     <br>
-                    <div class="col-sm-6">
-                    <p>Requester</p>
-                    <div class="mb-3" style="width: 50%;">
-                        <input type="string" class="form-control" @bind="Requester" disabled>
-                    </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <p>Start Date<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
                                 <input type="date" class="form-control" @bind="StartDate" disabled>
                             </div>
-
-                            @if (Status == 1)
-                            {<p>Start Time (Plan)<span class="required">*</span></p>}
-                            else if (Status == 4)
-                            {<p>Start Time (Actual)<span class="required">*</span></p>}
+                            @if (Status == 1 || Status == 3)
+                            {
+                                <p>Start Time (Plan)<span class="required">*</span></p>
+                            }
+                            else if (Status == 9)
+                            {
+                                <p>Start Time<span class="required">*</span></p>
+                            }
+                            else if (Status == 4 || Status == 6)
+                            {
+                                <p>Start Time (Actual)<span class="required">*</span></p>
+                            }
                             <div class="mb-3" style="width: 50%;">
                                 <input type="time" class="form-control" @bind="StartTime" disabled>
                             </div>
-                        </div>
 
-                        <div class="col-sm-6">
-                            <p>End Date<span class="required">*</span></p>
-                            <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="EndDate" disabled>
+                            @if (AttachmentFile != null)
+                            {
+                                <p>Attachment</p>
+                                <div class="mb-3" style="height: 30vh; max-width: 90%">
+                                    <img src=@AttachmentFile alt="Attachment Image" style="height: 100%;" disabled>
+                                </div>
+                            }
+
+                            <p>Remarks</p>
+                            <div class="mb-3" style="width: 80%;">
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks"
+                    disabled></textarea>
                             </div>
 
-                            @if (Status == 1)
-                            {<p>End Time (Plan)<span class="required">*</span></p>}
-                            else if (Status == 4)
-                            {<p>End Time (Actual)<span class="required">*</span></p>}
-                            <div class="mb-3" style="width: 50%;">
-                                <input type="time" class="form-control" @bind="EndTime" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-
-                    <div class="col-sm-6">
-                        <p>Attachment</p>
-                    </div>
-                    <div class="col-sm-12">
-                        @if (Attachment.Count() == 0)
-                        {<p style="color: red;">*No Data</p>}
-                        else
-                        {
-                            <img src=@AttachmentFile width="300" height="300" disabled>
-                        }
-                        <br><br>
-
-                    <div class="col-sm-6">
-                        <p>Remarks</p>
-                        <div class="mb-3" style="width: 80%;">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks" disabled></textarea>
-                        </div>
-                        <br>
+                            <br>
 
                             @if (Status == 1)
                             {
-                                <p>Request Date : @RequestDate.ToString("MMMM, dd yyyy")</p>
+                                <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
                             }
 
                             else if (Status == 2 || Status == 4 || Status == 5)
@@ -147,67 +310,6 @@ else
                                 <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
                                 <p>Completed Date: @CompletedDate.ToString("MMMM, dd yyyy")</p>
                             }
-
-                        </div>
-                        <br>
-                        @if (Status == 1)
-                        {  <div class="flex" style="display:flex;justify-content:center;align-items:center;">
-                            <div class="col-sm-4">
-                                <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(2)">
-                                APPROVE
-                                </button>
-
-                                <button class="btn" style="background-color: #CA000E; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(3)">
-                                REJECT
-                                </button>
-                            </div>
-                            </div>
-                        }
-
-                        else if (Status == 4)
-                        {
-                            <div class="flex" style="display:flex;justify-content:center;align-items:center;">
-                                <div class="col-sm-4">
-                                <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(6)">
-                                APPROVE
-                                </button>
-
-                                <button class="btn" style="background-color: #F6BF6D; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(5)">
-                                REVISE
-                                </button>
-                            </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            }
-            else
-            {   <div class="container" style="padding: 20px;">
-                @if (Status == 1 || Status == 3 || Status == 4 || Status == 6 || Status == 9)
-                {
-                    @if (Status == 1 || Status == 3)
-                    {<h3>Overtime Request Detail</h3>}
-                    else if (Status == 9)
-                    {<h3>Overtime Detail</h3>}
-                    else if (Status == 5 || Status == 6)
-                    {<h3>Overtime Realization Detail</h3>}
-                    
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p>Start Date<span class="required">*</span></p>
-                            <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="StartDate" disabled>
-                            </div>
-                            @if (Status == 1 || Status == 3)
-                            {<p>Start Time (Plan)<span class="required">*</span></p>}
-                            else if (Status == 9)
-                            {<p>Start Time<span class="required">*</span></p>}
-                            else if (Status == 4 || Status == 6)
-                            {<p>Start Time (Actual)<span class="required">*</span></p>}
-                            <div class="mb-3" style="width: 50%;">
-                                <input type="time" class="form-control" @bind="StartTime" disabled>
-                            </div>
                         </div>
 
                         <div class="col-sm-6">
@@ -215,78 +317,33 @@ else
                             <div class="mb-3" style="width: 50%;">
                                 <input type="date" class="form-control" @bind="EndDate" disabled>
                             </div>
-                            @if (Status == 1 || Status == 3 )
-                            {<p>End Time (Plan)<span class="required">*</span></p>}
+                            @if (Status == 1 || Status == 3)
+                            {
+                                <p>End Time (Plan)<span class="required">*</span></p>
+                            }
                             else if (Status == 9)
-                            {<p>End Time<span class="required">*</span></p>}
+                            {
+                                <p>End Time<span class="required">*</span></p>
+                            }
                             else if (Status == 4 || Status == 6)
-                            {<p>End Time (Actual)<span class="required">*</span></p>}
+                            {
+                                <p>End Time (Actual)<span class="required">*</span></p>
+                            }
                             <div class="mb-3" style="width: 50%;">
                                 <input type="time" class="form-control" @bind="EndTime" disabled>
                             </div>
                         </div>
                     </div>
                     <br>
-                    <div class="col-sm-6">
-                        <p>Attachment</p>
-                    </div>
-                    <div class="col-sm-12">
-                        @if (Attachment.Count() == 0)
-                        {<p style="color: red;">*No Data</p>}
-                        else
-                        {
-                            <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
-                        }
-                        <br>
-                        
-                        <div class="col-sm-6">
-                            <p>Remarks</p>
-                            <div class="mb-3" style="width: 80%;">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks" disabled></textarea>
-                            </div>
-                            <br>
-
-                                @if (Status == 1)
-                                {
-                                    <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
-                                }
-
-                                else if (Status == 2 || Status == 4 || Status == 5)
-                                {
-                                    <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
-                                    <p>Approved Date: @ApprovedDate.ToString("MMMM, dd yyyy")</p>
-                                }
-
-                                else if (Status == 3)
-                                {
-                                    <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
-                                    <p>Completed Date: @CompletedDate.ToString("MMMM, dd yyyy")</p>
-                                }
-
-                                else if (Status == 6)
-                                {
-                                    <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
-                                    <p>Approved Date: @ApprovedDate.ToString("MMMM, dd yyyy")</p>
-                                    <p>Completed Date: @CompletedDate.ToString("MMMM, dd yyyy")</p>
-                                }
-
-                                else if (Status == 9)
-                                {
-                                    <p>Request Date: @RequestDate.ToString("MMMM, dd yyyy")</p>
-                                    <p>Completed Date: @CompletedDate.ToString("MMMM, dd yyyy")</p>
-                                }
-
-                            </div>
-                            <br>
-                            @if (Status == 1 || Status == 4)
-                            {   
-                                <div class="mb-3" style="display:flex;justify-content:center;align-items:center;">
-                                    <button class="btn" style="background-color: #CA000E; color: white; width: 30%" @onclick="() => PostOvertimeStatus(9)">
-                                        CANCEL
-                                    </button>
-                                </div>
-                            }
+                    @if (Status == 1 || Status == 4)
+                    {
+                        <div class="mb-3" style="display:flex;justify-content:center;align-items:center;">
+                            <button class="btn" style="background-color: #CA000E; color: white; width: 30%"
+            @onclick="() => DialogCancel()">
+                                CANCEL
+                            </button>
                         </div>
+                    }
                 }
                 else
                 {
@@ -296,13 +353,38 @@ else
                         <div class="col-sm-6">
                             <p>Start Date<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="StartDate" >
+                                <input type="date" class="form-control" @bind="StartDate">
                             </div>
-                            <br>
+
                             <p>Start Time (Actual)<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
                                 <input type="time" class="form-control" @bind="StartTime">
                             </div>
+
+                            @if (AttachmentFile != null)
+                            {
+                                <p>Attachment</p>
+                                <div class="mb-3" style="height: 30vh; max-width: 90%">
+                                    <img src=@AttachmentFile alt="Attachment Image" style="height: 100%;">
+                                </div>
+                            }
+                            else
+                            {
+                                <p>Upload Attachment</p>
+                                <div class="mb-3" style="width: 80%;">
+                                    <InputFile OnChange="@LoadFiles" class="form-control" />
+                                </div>
+                            }
+
+                            <p>Remarks</p>
+                            <div class="mb-3" style="width: 80%;">
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks"></textarea>
+                            </div>
+
+                            <br>
+
+                            <p>Request Date : @RequestDate.ToString("MMMM, dd yyyy")</p>
+                            <p>Approved Date : @ApprovedDate.ToString("MMMM, dd yyyy")</p>
                         </div>
 
                         <div class="col-sm-6">
@@ -310,59 +392,28 @@ else
                             <div class="mb-3" style="width: 50%;">
                                 <input type="date" class="form-control" @bind="EndDate">
                             </div>
-                            <br>
+
                             <p>End Time (Actual)<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
                                 <input type="time" class="form-control" @bind="EndTime">
                             </div>
                         </div>
                     </div>
-                        <br>
-                        <div class="col-sm-6">
-                            <p>Attachment</p>
-                            @if (Attachment.Count() == 0)
-                            {<p style="color: red;">*No Data</p>}
-                            else
-                            {
-                                <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
-                            }
-                            <br><br><br>
-
-                            <p>Upload Attachment</p>
-                            <div class="mb-3" style="width: 80%;">
-                                <InputFile OnChange="@LoadFiles" class="form-control" />
-                            </div>
-
-                            <p>Remarks</p>
-                            <div class="mb-3" style="width: 80%;">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks"></textarea>
-                            </div>
-                            <br>
-                        </div>
-                            <p>Request Date : @RequestDate.ToString("MMMM, dd yyyy")</p>
-                            <p>Approved Date : @ApprovedDate.ToString("MMMM, dd yyyy")</p>
-                            <br>
-
-                        
-                        
-                        <div class="flex" style="display:flex;justify-content:center;align-items:center;">
-                            <div class="col-sm-4">
-                            <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(4)">
+                    <br>
+                    <div class="mb-3" style="display:flex;justify-content:center;align-items:center;">
+                        <button class="btn" style="background-color: #0483BA; color: white; width: 30%; margin: 4px 2px;"
+            @onclick="() => PostOvertimeStatus(4)">
                             SUBMIT
-                            </button>
-
-                            <button class="btn" style="background-color: #CA000E; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(9)">
+                        </button>
+                        <button class="btn" style="background-color: #CA000E; color: white; width: 30%; margin: 4px 2px;"
+            @onclick="() => DialogCancel()">
                             CANCEL
-                            </button>
-                        </div>
-                        </div>
+                        </button>
+                    </div>
                 }
             </div>
-            }
         }
-
     }
-
 }
 
 @if (DialogIsOpen)
@@ -371,10 +422,33 @@ else
     </Dialog>
 }
 
+@if (DialogCancelIsOpen)
+{
+    <Dialog Title="@dialogTitle" Content="@dialogMessage" OnClose="@OnDialogCancelClose" Type="@dialogType">
+    </Dialog>
+}
+
+@if (DialogRejectIsOpen)
+{
+    <Dialog Title="@dialogTitle" Content="@dialogMessage" OnClose="@OnDialogRejectClose" Type="@dialogType">
+    </Dialog>
+}
+
+@if (isLoading)
+{
+    <div class="overlay"></div>
+    <div class="spanner" style="display:flex;justify-content:center;align-items:center;">
+        <div>
+            <div class="spinner-border"></div>
+            <p>Loading</p>
+        </div>
+    </div>
+}
+
 @code {
     private bool isLoadingPage = true;
     private bool isLoggedIn = false;
-    private bool isLoading = true;
+    private bool isLoading = false;
     [Parameter]
     public string id { get; set; }
     public List<OvertimeDTO> OvertimeById { get; set; } = new List<OvertimeDTO>();
@@ -418,12 +492,13 @@ else
         EndTime = OvertimeById[0].end_time;
         Remarks = OvertimeById[0].remarks!;
         Status = OvertimeById[0].status!;
-        AttachmentFile = OvertimeById[0].attachment!;
+        AttachmentFile = OvertimeById[0].attachment;
         RequestDate = OvertimeById[0].request_date;
         ApprovedDate = OvertimeById[0].approved_date;
         CompletedDate = OvertimeById[0].completed_date;
 
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeById));
+        Console.WriteLine(AttachmentFile);
         isLoading = false;
     }
 
@@ -444,7 +519,7 @@ else
         RequestDate = OvertimeByIdSuperior[0].request_date;
         ApprovedDate = OvertimeByIdSuperior[0].approved_date;
         CompletedDate = OvertimeByIdSuperior[0].completed_date;
-        
+
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeByIdSuperior));
         isLoading = false;
     }
@@ -464,7 +539,7 @@ else
 
     private async Task PostOvertimeStatus(int Status)
     {
-        @* isLoading = true; *@
+        isLoading = true;
         if (StartDate != null && EndDate != null && StartTime != null && EndTime != null)
         {
             try
@@ -493,10 +568,11 @@ else
                 ResponsePost = await OvertimeService.PostOvertimeStatus(int.Parse(id), formDataContent, token.Value);
                 responseMessage = await ResponsePost.Content.ReadAsStringAsync();
                 Console.WriteLine(responseMessage);
+                isLoading = false;
+                Console.WriteLine("Status is Loading : " + isLoading);
                 if (ResponsePost.IsSuccessStatusCode)
                 {
-                    
-                    if(Status == 2)
+                    if (Status == 2)
                     {
                         OpenDialog(title: "Request Success", message: "Successfully approve overtime request", type: Dialog.Category.Okay);
                     }
@@ -510,7 +586,8 @@ else
                     }
                     else if (Status == 5)
                     {
-                        OpenDialog(title: "Request Success", message: "Successfully requesting revisions for overtime settlement", type: Dialog.Category.Okay);
+                        OpenDialog(title: "Request Success", message: "Successfully requesting revisions for overtime settlement", type:
+                        Dialog.Category.Okay);
                     }
                     else if (Status == 6)
                     {
@@ -520,7 +597,7 @@ else
                     {
                         OpenDialog(title: "Request Success", message: "Successfully cancelled this overtime", type: Dialog.Category.Okay);
                     }
-                    
+
                 }
                 else
                 {
@@ -563,7 +640,7 @@ else
     );
     String Remarks = "";
     int Status = 0;
-    String AttachmentFile = "";
+    String? AttachmentFile;
     DateOnly RequestDate = new DateOnly();
     DateOnly ApprovedDate = new DateOnly();
     DateOnly CompletedDate = new DateOnly();
@@ -589,6 +666,7 @@ else
     private string dialogTitle = "";
     private string dialogMessage = "";
     private Dialog.Category dialogType = Dialog.Category.Okay;
+    private EventCallback<bool> dialogOnClose;
     private bool DialogIsOpen = false;
     private void OpenDialog(string title, string message, Dialog.Category type)
     {
@@ -612,4 +690,54 @@ else
     }
     HttpResponseMessage ResponsePost = new HttpResponseMessage();
     String responseMessage = "";
+
+    private void DialogCancel()
+    {
+        OpenDialogCancel(
+            title: "Cancel Overtime",
+            message: "Are you sure you want to cancel this request?",
+            type: Dialog.Category.SaveNot
+        );
+    }
+    private void OpenDialogCancel(string title, string message, Dialog.Category type)
+    {
+        DialogCancelIsOpen = true;
+        dialogTitle = title;
+        dialogMessage = message;
+        dialogType = type;
+    }
+    private bool DialogCancelIsOpen = false;
+    private void OnDialogCancelClose(bool isOk)
+    {
+        DialogCancelIsOpen = false;
+        if (isOk)
+        {
+            PostOvertimeStatus(9);
+        }
+    }
+
+    private void DialogReject()
+    {
+        OpenDialogCancel(
+            title: "Reject Overtime",
+            message: "Are you sure you want to reject this request?",
+            type: Dialog.Category.SaveNot
+        );
+    }
+    private void OpenDialogReject(string title, string message, Dialog.Category type)
+    {
+        DialogRejectIsOpen = true;
+        dialogTitle = title;
+        dialogMessage = message;
+        dialogType = type;
+    }
+    private bool DialogRejectIsOpen = false;
+    private void OnDialogRejectClose(bool isOk)
+    {
+        DialogRejectIsOpen = false;
+        if (isOk)
+        {
+            PostOvertimeStatus(3);
+        }
+    }
 }
