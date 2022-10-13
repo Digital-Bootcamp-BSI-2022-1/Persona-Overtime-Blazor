@@ -6,14 +6,31 @@
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject IUserDetailService UserDetailService;
 
-<PageTitle>Profile</PageTitle>
+<style>
+    .spanner {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        text-align: center;
+        color: #0582AE;
+        visibility: visible;
+    }
+</style>
+
+<PageTitle>Profile - Persona</PageTitle>
 
 @if (isLoadingPage)
 {
     <div style="height: 80vh;">
-    <br><br><br>
-    <p>Loading Page...</p>
-    <br><br><br>
+        <div class="spanner" style="display:flex;justify-content:center;align-items:center;">
+            <div>
+                <div class="spinner-border"></div>
+                <p>Loading</p>
+            </div>
+        </div>
     </div>
 }
 else
@@ -21,61 +38,59 @@ else
     @if (!isLoggedIn)
     {
         <div style="height: 80vh;">
-        <br><br><br>
-        <p>Please Login</p>
-        <br><br><br>
+            <div class="spanner" style="display:flex;justify-content:center;align-items:center;">
+                <div>
+                    <div><span class="oi oi-circle-x" aria-hidden="true" style="font-size: 30px; color: #CA000E;"></span></div>
+                    <p>Please <a href="/login"><b>Login</b></a></p>
+                </div>
+            </div>
         </div>
     }
     else
     {
-        <h1>Profile</h1>
-        <br>
-        <div class="col-sm-12">
+        <div class="container" style="padding: 20px;">
+            <br>
             <div class="row">
-                <div class="col-sm-3">
-                    <img src="img\user.png" alt="profile" width="200">
+                <div class="col-2">
+                    <img src="img\user.png" alt="profile" width="100%">
                 </div>
-
-                <div class="col-sm-3">
+                <div class="col-10">
                     <p type="text"> @User.name</p>
                     <p type="text"> @User.nik</p>
                     <p type="text"> @User.role</p>
                 </div>
             </div>
             <br>
-            <div class="col-sm-8">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p type="text">Grade:</p>
-                        <p type="text">@User.grade</p>
-                        <hr size="4px" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <p type="text">Grade</p>
+                    <p type="text">&nbsp;&nbsp;@User.grade</p>
+                    <hr size="4px" />
 
-                        <p type="text">Phone:</p>
-                        <p type="text">@User.phone</p>
-                        <hr size="4px" />
+                    <p type="text">Phone</p>
+                    <p type="text">&nbsp;&nbsp;@User.phone</p>
+                    <hr size="4px" />
 
-                        <p type="text">KTP:</p>
-                        <p type="text">@User.ktp</p>
-                        <hr size="4px" />
+                    <p type="text">KTP</p>
+                    <p type="text">&nbsp;&nbsp;@User.ktp</p>
+                    <hr size="4px" />
 
-                        <p type="text">Join Date:</p>
-                        <p type="text">@User.join_date</p>
-                        <hr size="4px" />
-                    </div>
+                    <p type="text">Join Date</p>
+                    <p type="text">&nbsp;&nbsp;@User.join_date</p>
+                    <hr size="4px" />
+                </div>
+                <div class="col-sm-6">
+                    <p type="text">Employement Status</p>
+                    <p type="text">&nbsp;&nbsp;@User.employment_status</p>
+                    <hr size="4px" />
 
-                    <div class="col-sm-4">
-                        <p type="text">Employement Status:</p>
-                        <p type="text">@User.employment_status</p>
-                        <hr size="4px" />
+                    <p type="text">Email</p>
+                    <p type="text">&nbsp;&nbsp;@User.email</p>
+                    <hr size="4px" />
 
-                        <p type="text">Email:</p>
-                        <p type="text">@User.email</p>
-                        <hr size="4px" />
-
-                        <p type="text">NPWP:</p>
-                        <p type="text">@User.npwp</p>
-                        <hr size="4px" />
-                    </div>
+                    <p type="text">NPWP</p>
+                    <p type="text">&nbsp;&nbsp;@User.npwp</p>
+                    <hr size="4px" />
                 </div>
             </div>
         </div>

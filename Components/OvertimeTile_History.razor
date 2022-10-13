@@ -47,11 +47,19 @@
                     </div>
                     <div class="col-10" style="text-align: start; font-size: 14px;">
                         <br>
-                        <div>
-                            @item.start_time.ToString("HH:mm:ss") - @item.end_time.ToString("HH:mm:ss")
-                        </div>
-                        <div>
-                            Submission Date: @item.request_date.ToString("MMM, dd yyyy")
+                        <div class="row" style="display:flex;justify-content:center;align-items:center;padding:0;margin:0;text-align:center;">
+                            <div class="col-4" style="padding:0;margin:0;">
+                                <div style="font-size: 12px;">Start Time</div>
+                                <div style="font-size: 14px;">@item.start_time.ToString("HH:mm:ss")</div>
+                            </div>
+                            <div class="col-4" style="padding:0;margin:0;">
+                                <div style="font-size: 12px;">End Time</div>
+                                <div style="font-size: 14px;">@item.end_time.ToString("HH:mm:ss")</div>
+                            </div>
+                            <div class="col-4" style="padding:0;margin:0;">
+                                <div style="font-size: 12px;">Duration</div>
+                                <div style="font-size: 14px;">@item.duration.ToString() Hours</div>
+                            </div>
                         </div>
                         <br>
                     </div>
