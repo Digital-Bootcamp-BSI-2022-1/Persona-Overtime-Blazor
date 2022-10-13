@@ -1,0 +1,79 @@
+@using Models
+
+<div class="col-4">
+    <div class="card" style="border-radius: 10px;" type="button" @onclick="() => Navigate(item.id)">
+        <div class="text-center">
+            @if (item.status == 1 || item.status == 4)
+            {
+                <div class="card-header"
+                style="background-color:#F6BF6D; border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                    <b style="color: white;">@item.status_text</b>
+                </div>
+            }
+            @if (item.status == 2 || item.status == 5)
+            {
+                <div class="card-header"
+                style="background-color:#0582AE; border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                    <b style="color: white;">@item.status_text</b>
+                </div>
+            }
+            @if (item.status == 3 || item.status == 9)
+            {
+                <div class="card-header"
+                style="background-color:#CA000E; border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                    <b style="color: white;">@item.status_text</b>
+                </div>
+            }
+            @if (item.status == 6)
+            {
+                <div class="card-header"
+                style="background-color:#4BAF50; border-top-right-radius: 10px; border-top-left-radius: 10px;">
+                    <b style="color: white;">@item.status_text</b>
+                </div>
+            }
+            <div class="card-body" style="padding:0;">
+                <div class="row" style="display:flex;justify-content:center;align-items:center;padding:0;margin:0;">
+                    <div class="col-2"
+                        style="display:flex;justify-content:center;align-items:center;padding:0;margin:0;">
+                        <div
+                            style="background-color: #0483BA; color: white; border-radius: 8px; width: 80%; font-size: 12px; padding: 3px;">
+                            <div>
+                                @item.start_date.ToString("dd")
+                            </div>
+                            <div>
+                                @item.start_date.ToString("MMM")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10" style="text-align: start; font-size: 14px;">
+                        <br>
+                        <div>
+                            @item.start_time.ToString("HH:mm:ss") - @item.end_time.ToString("HH:mm:ss")
+                        </div>
+                        <div>
+                            Submission Date: @item.request_date.ToString("MMM, dd yyyy")
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            @if (isSuperior)
+            {
+                <div class="card-footer" style="border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+                    <b>@item.user.name</b>
+                </div>
+            }
+        </div>
+    </div>
+    <br>
+</div>
+
+@code {
+    [Parameter] public OvertimeDTO item { get; set; }
+    [Parameter] public bool isSuperior { get; set; }
+
+    private void Navigate(int id)
+    {
+        Navigation.NavigateTo("/overtime/detail/" + id);
+    }
+}

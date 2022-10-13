@@ -1,20 +1,37 @@
-﻿@using PersonaOvertimeWeb.Models;
+﻿@page "/"
+
+@using PersonaOvertimeWeb.Models;
 @using Services;
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject IOvertimeService OvertimeService;
 @inject IUserDetailService UserDetailService;
 
-@page "/"
+<style>
+    .spanner {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        text-align: center;
+        color: #0582AE;
+        visibility: visible;
+    }
+</style>
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Home - Persona</PageTitle>
 
 @if (isLoadingPage)
 {
     <div style="height: 80vh;">
-        <br><br><br>
-        <p>Loading Page...</p>
-        <br><br><br>
+        <div class="spanner" style="display:flex;justify-content:center;align-items:center;">
+            <div>
+                <div class="spinner-border"></div>
+                <p>Loading</p>
+            </div>
+        </div>
     </div>
 }
 else
@@ -22,71 +39,90 @@ else
     @if (!isLoggedIn)
     {
         <div style="height: 80vh;">
-            <br><br><br>
-            <p>Please Login</p>
-            <br><br><br>
+            <div class="spanner" style="display:flex;justify-content:center;align-items:center;">
+                <div>
+                    <div><span class="oi oi-circle-x" aria-hidden="true" style="font-size: 30px; color: #CA000E;"></span></div>
+                    <p>Please <a href="/login"><b>Login</b></a></p>
+                </div>
+            </div>
         </div>
     }
     else
     {
-        <div>
-            <h3>Good Afternoon!</h3>
+        <div class="container" style="padding: 20px;">
+            @if (time_now.Hour >= 0 && time_now.Hour < 12)
+            {
+                <h3>Good Morning!</h3>
+            }
+            @if (time_now.Hour >= 12 && time_now.Hour < 18)
+            {
+                <h3>Good Afternoon!</h3>
+            }
+            @if (time_now.Hour >= 18 && time_now.Hour < 24)
+            {
+                <h3>Good Night!</h3>
+            }
 
             <p>Welcome to Persona</p>
-
-            <br><br><br>
-
-
-            <br><br>
 
             <div class="calendar">
                 <div class="calendar__picture">
                     <h2>@date_now.ToString("MMMM, dd yyyy")</h2>
                 </div>
             </div>
-            <br><br>
 
-            <br><br><br>
+            <br>
 
             @if (isLoading)
             {
-                <p>Loading data.....</p>
+                <div style="height: 100%;">
+                    <div class="spanner" style="display:flex;justify-content:center;align-items:center;">
+                        <div>
+                            <div class="spinner-border"></div>
+                            <p>Loading</p>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
                 <p>Overtime Activity</p>
-
-                <br><br>
                 @if (User.grade != "VIA")
                 {
                     @if (OvertimestatisticDataSup != null)
                     {
-                        <div class="text-center" style="font-family: system-ui;">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Need Approval</div>
-                                            <h3>@(OvertimestatisticDataSup.data.need_approval +
-                            OvertimestatisticData.data.settlement_approval)</h3>
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__a">
+                                        <div class="card-header">Need Approval</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
+                                            <h3>@(OvertimestatisticDataSup.data.need_approval + OvertimestatisticDataSup.data.settlement_approval)
+                                            </h3>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Approved</div>
-                                            <h3>@(OvertimestatisticDataSup.data.approved + OvertimestatisticData.data.revise)</h3>
+                                </div>
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__b">
+                                        <div class="card-header">Approved</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
+                                            <h3>@(OvertimestatisticDataSup.data.approved + OvertimestatisticDataSup.data.revise)</h3>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Rejected</div>
-                                            <h3>@OvertimestatisticDataSup.data.rejected</h3>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Completed</div>
+                                </div>
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__c">
+                                        <div class="card-header">Completed</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
                                             <h3>@OvertimestatisticDataSup.data.completed</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__d">
+                                        <div class="card-header">Rejected</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
+                                            <h3>@OvertimestatisticDataSup.data.rejected</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -98,32 +134,38 @@ else
                 {
                     @if (OvertimestatisticData != null)
                     {
-                        <div class="text-center" style="font-family: system-ui;">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Need Approval</div>
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__a">
+                                        <div class="card-header">Need Approval</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
                                             <h3>@(OvertimestatisticData.data.need_approval + OvertimestatisticData.data.settlement_approval)
                                             </h3>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Approved</div>
+                                </div>
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__b">
+                                        <div class="card-header">Approved</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
                                             <h3>@(OvertimestatisticData.data.approved + OvertimestatisticData.data.revise)</h3>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Rejected</div>
-                                            <h3>@OvertimestatisticData.data.rejected</h3>
+                                </div>
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__c">
+                                        <div class="card-header">Completed</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
+                                            <h3>@OvertimestatisticData.data.completed</h3>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card__a">
-                                            <div class="card-header">Completed</div>
-                                            <h3>@OvertimestatisticData.data.completed</h3>
+                                </div>
+                                <div class="col" style="display:flex;justify-content:center;align-items:center;">
+                                    <div class="card__d">
+                                        <div class="card-header">Rejected</div>
+                                        <div style="height: 60%; display:flex;justify-content:center;align-items:center;">
+                                            <h3>@OvertimestatisticData.data.rejected</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -131,8 +173,7 @@ else
                         </div>
                     }
                 }
-                <br><br><br><br><br><br>
-                <SurveyPrompt Title="How is Blazor working for you?" />
+                <br><br><br>
             }
         </div>
     }
@@ -164,6 +205,7 @@ else
     }
 
     DateOnly date_now = DateOnly.FromDateTime(DateTime.Now);
+    TimeOnly time_now = TimeOnly.FromDateTime(DateTime.Now);
 
     public SuccessResponse<OvertimeStatistic> OvertimestatisticData { get; set; } = new();
     public SuccessResponse<OvertimeStatistic> OvertimestatisticDataSup { get; set; } = new();

@@ -33,19 +33,25 @@
                         </button>
                         <ul class="navbar-nav flex-grow-1"></ul>
                         <form class="d-flex"></form>
-                        <div class="popup" @onclick="TogglePopUp">Click me!
+                        <div class="popup" @onclick="TogglePopUp">
+                            @Name <span class="oi oi-person" aria-hidden="true"></span>
                             @if (showPopUp)
                             {
-                                <span class="popuptext" id="myPopup">Popup text...</span>
+                                <div class="popuptext" id="myPopup" style="height: 17vh;">
+                                    <div>
+                                        <button class="btn btn-light" @onclick="NavigateToProfile">
+                                            My Profile
+                                        </button>
+                                    </div>
+                                    <div style="height: 2vh;"></div>
+                                    <div>
+                                        <button class="btn btn-danger" @onclick="Logout">
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
                             }
                         </div>
-                        <button class="btn btn-danger" @onclick="Logout">
-                            Logout
-                        </button>
-                        <NavLink class="nav-link" href="profile" style="color: black;">
-                            @Name <span class="oi oi-person" aria-hidden="true"></span>
-                        </NavLink>
-                        
                     </div>
                 </div>
             </nav>
@@ -56,7 +62,7 @@
         </article>
 
         <footer>
-            <div class="container"
+            <div
                 style="height: 10vh; background-color: rgba(250, 250, 250, 1); display:flex;justify-content:center;align-items:center;">
                 <div class="text-center">
                     © 2022 - Persona
@@ -76,6 +82,10 @@
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
+    }
+    private void NavigateToProfile()
+    {
+        Navigation.NavigateTo("/profile");
     }
 
     private bool collapseNavMenu = true;
