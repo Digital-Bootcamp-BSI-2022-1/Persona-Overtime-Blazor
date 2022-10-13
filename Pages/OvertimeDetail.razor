@@ -55,30 +55,45 @@ else
             @if (User.grade != "VIA")
             {
                 <div class="container" style="padding: 20px;">
-                    <h3>Overtime Request Detail</h3>
+                    @if (Status == 1)
+                    {<h3>Overtime Request Detail</h3>}
+                    else if (Status == 4)
+                    {<h3>Overtime Settlement Detail</h3>}
                     <br>
+                    <div class="col-sm-6">
+                    <p>Requester</p>
+                    <div class="mb-3" style="width: 50%;">
+                        <input type="string" class="form-control" @bind="Requester" disabled>
+                    </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <p>Start Date<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="StartDate">
+                                <input type="date" class="form-control" @bind="StartDate" disabled>
                             </div>
 
-                            <p>Start Time (Plan)<span class="required">*</span></p>
+                            @if (Status == 1)
+                            {<p>Start Time (Plan)<span class="required">*</span></p>}
+                            else if (Status == 4)
+                            {<p>Start Time (Actual)<span class="required">*</span></p>}
                             <div class="mb-3" style="width: 50%;">
-                                <input type="time" class="form-control" @bind="StartTime">
+                                <input type="time" class="form-control" @bind="StartTime" disabled>
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <p>End Date<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="EndDate">
+                                <input type="date" class="form-control" @bind="EndDate" disabled>
                             </div>
 
-                            <p>End Time (Plan)<span class="required">*</span></p>
+                            @if (Status == 1)
+                            {<p>End Time (Plan)<span class="required">*</span></p>}
+                            else if (Status == 4)
+                            {<p>End Time (Actual)<span class="required">*</span></p>}
                             <div class="mb-3" style="width: 50%;">
-                                <input type="time" class="form-control" @bind="EndTime">
+                                <input type="time" class="form-control" @bind="EndTime" disabled>
                             </div>
                         </div>
                     </div>
@@ -87,26 +102,16 @@ else
                     <div class="col-sm-6">
                         <p>Attachment</p>
                     </div>
-
                     <div class="col-sm-12">
-                        @if (Attachment is null)
-                        {
-                            <p style="color: red;">No Data*</p>
-                        }
-                        else
-                        {
-                            <img src=@AttachmentFile alt="No Attachment" width="300" height="300">
-                        }
+                        <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
                         <br><br>
-                        <div class="col-sm-6">
-                            <p>Remarks</p>
 
-
-                            <div class="mb-3" style="width: 80%;">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks"></textarea>
-                            </div>
-                            <br>
-
+                    <div class="col-sm-6">
+                        <p>Remarks</p>
+                        <div class="mb-3" style="width: 80%;">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks" disabled></textarea>
+                        </div>
+                        <br>
 
                             @if (Status == 1)
                             {
@@ -141,36 +146,31 @@ else
                         </div>
                         <br>
                         @if (Status == 1)
-                        {
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="btn btn-success" type="button" @onclick="() => PostOvertimeStatus(2)">Approve</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="btn btn-danger" type="button" @onclick="() => PostOvertimeStatus(3)">Reject</div>
-                                </div>
+                        {  <div class="flex" style="display:flex;justify-content:center;align-items:center;">
+                            <div class="col-sm-4">
+                                <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(2)">
+                                APPROVE
+                                </button>
+
+                                <button class="btn" style="background-color: #CA000E; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(3)">
+                                REJECT
+                                </button>
+                            </div>
                             </div>
                         }
 
                         else if (Status == 4)
                         {
-                            <div class="row">
+                            <div class="flex" style="display:flex;justify-content:center;align-items:center;">
                                 <div class="col-sm-4">
-                                    <div class="btn btn-success" type="button" @onclick="() => PostOvertimeStatus(2)">
-                                        @if (isLoading)
-                                        {
-                                            <p>Approving...</p>
-                                        }
-                                        else
-                                        {
-                                            <p>Approved</p>
-                                        }
-                                    </div>
-                                </div>
+                                <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(2)">
+                                APPROVE
+                                </button>
 
-                                <div class="col-sm-4">
-                                    <div class="btn btn-warning" type="button" @onclick="() => PostOvertimeStatus(5)">Revise</div>
-                                </div>
+                                <button class="btn" style="background-color: #F6BF6D; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(5)">
+                                REVISE
+                                </button>
+                            </div>
                             </div>
                         }
                     </div>
@@ -180,53 +180,60 @@ else
             {   <div class="container" style="padding: 20px;">
                 @if (Status == 1 || Status == 3 || Status == 4 || Status == 6 || Status == 9)
                 {
-                    <h3>Overtime Request Detail</h3>
+                    @if (Status == 1 || Status == 3)
+                    {<h3>Overtime Request Detail</h3>}
+                    else if (Status == 9)
+                    {<h3>Overtime Detail</h3>}
+                    else if (Status == 5 || Status == 6)
+                    {<h3>Overtime Realization Detail</h3>}
+                    
                     <br>
                     <div class="row">
                         <div class="col-sm-6">
                             <p>Start Date<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="StartDate">
+                                <input type="date" class="form-control" @bind="StartDate" disabled>
                             </div>
-
-                            <p>Start Time (Plan)<span class="required">*</span></p>
+                            @if (Status == 1 || Status == 3)
+                            {<p>Start Time (Plan)<span class="required">*</span></p>}
+                            else if (Status == 9)
+                            {<p>Start Time<span class="required">*</span></p>}
+                            else if (Status == 4 || Status == 6)
+                            {<p>Start Time (Actual)<span class="required">*</span></p>}
                             <div class="mb-3" style="width: 50%;">
-                                <input type="time" class="form-control" @bind="StartTime">
+                                <input type="time" class="form-control" @bind="StartTime" disabled>
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <p>End Date<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="EndDate">
+                                <input type="date" class="form-control" @bind="EndDate" disabled>
                             </div>
-
-                            <p>End Time (Plan)<span class="required">*</span></p>
+                            @if (Status == 1 || Status == 3 )
+                            {<p>End Time (Plan)<span class="required">*</span></p>}
+                            else if (Status == 9)
+                            {<p>End Time<span class="required">*</span></p>}
+                            else if (Status == 4 || Status == 6)
+                            {<p>End Time (Actual)<span class="required">*</span></p>}
                             <div class="mb-3" style="width: 50%;">
-                                <input type="time" class="form-control" @bind="EndTime">
+                                <input type="time" class="form-control" @bind="EndTime" disabled>
                             </div>
                         </div>
                     </div>
-
+                    <br>
                     <div class="col-sm-6">
                         <p>Attachment</p>
                     </div>
-
+                    <br>
                     <div class="col-sm-12">
-                        @if (Attachment is null)
-                        {
-                            <p style="color: red;">No Data*</p>
-                        }
-                        else
-                        {
-                            <img src=@AttachmentFile alt="No Attachment" width="300" height="300">
-                        }
+                        <img src=@AttachmentFile alt="No Attachment" width="300" height="300" disabled>
                         <br><br>
                         
                         <div class="col-sm-6">
                             <p>Remarks</p>
                             <div class="mb-3" style="width: 80%;">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" @bind="Remarks" disabled></textarea>
                             </div>
                             <br>
 
@@ -280,10 +287,10 @@ else
                         <div class="col-sm-6">
                             <p>Start Date<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
-                                <input type="date" class="form-control" @bind="StartDate">
+                                <input type="date" class="form-control" @bind="StartDate" >
                             </div>
-
-                            <p>Start Time (Plan)<span class="required">*</span></p>
+                            <br>
+                            <p>Start Time (Actual)<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
                                 <input type="time" class="form-control" @bind="StartTime">
                             </div>
@@ -294,24 +301,17 @@ else
                             <div class="mb-3" style="width: 50%;">
                                 <input type="date" class="form-control" @bind="EndDate">
                             </div>
-
-                            <p>End Time (Plan)<span class="required">*</span></p>
+                            <br>
+                            <p>End Time (Actual)<span class="required">*</span></p>
                             <div class="mb-3" style="width: 50%;">
                                 <input type="time" class="form-control" @bind="EndTime">
                             </div>
                         </div>
                     </div>
-
+                        <br>
                         <div class="col-sm-6">
                             <p>Attachment</p>
-                                @if (Attachment is null)
-                                {
-                                    <p style="color: red;">No Data*</p>
-                                }
-                                else
-                                {
-                                    <img src=@AttachmentFile alt="No Attachment" width="300" height="300">
-                                }
+                            <img src=@AttachmentFile alt="No Attachment" width="300" height="300">
                             <br><br><br>
 
                             <p>Upload Attachment</p>
@@ -330,15 +330,14 @@ else
                             <br>
 
                         
-                        <div class="flex px-3" style="display:flex;justify-content:center;align-items:center;">
-                        <div class="row">
-                        <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 30%" @onclick="() => PostOvertimeStatus(4)">
-                        SUBMIT
-                        </button>
-                        <button class="btn" style="background-color: #CA000E; color: white; width: 30%" @onclick="() => PostOvertimeStatus(9)">
-                        CANCEL
-                        </button>
-                        </div>
+                        <div class="flex" style="display:flex;justify-content:center;align-items:center;">
+                            <button class="btn" style="background-color: #3ea7c9f2; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(4)">
+                            SUBMIT
+                            </button>
+
+                            <button class="btn" style="background-color: #CA000E; color: white; width: 50%; margin: 4px 2px;" @onclick="() => PostOvertimeStatus(9)">
+                            CANCEL
+                            </button>
                         </div>
                 }
             </div>
@@ -417,6 +416,7 @@ else
 
         var token = await ProtectedSessionStore.GetAsync<string>("token");
         OvertimeByIdSuperior = await OvertimeService.GetOvertimeByIdSuperior(id, token.Value);
+        Requester = OvertimeByIdSuperior[0].user.name!;
         StartDate = OvertimeByIdSuperior[0].start_date;
         EndDate = OvertimeByIdSuperior[0].end_date;
         StartTime = OvertimeByIdSuperior[0].start_time;
@@ -427,8 +427,7 @@ else
         RequestDate = OvertimeByIdSuperior[0].request_date;
         ApprovedDate = OvertimeByIdSuperior[0].approved_date;
         CompletedDate = OvertimeByIdSuperior[0].completed_date;
-
-
+        
         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(OvertimeByIdSuperior));
         isLoading = false;
     }
@@ -499,6 +498,7 @@ else
         isLoading = false;
     }
 
+    String Requester = "";
     DateOnly StartDate = new DateOnly(
     year: DateTime.Now.Year,
     month: DateTime.Now.Month,
