@@ -65,12 +65,12 @@ else
 
             <p>Welcome to Persona</p>
 
-            <div class="calendar">
-                <div class="calendar__picture">
-                    <h2>@date_now.ToString("MMMM, dd yyyy")</h2>
+            <div class="card" style="width: 30%;">
+                    <div class="card-header" style="background-color: #3ea7c9f2;">@date_now.ToString("dddd, MMMM dd yyyy")</div>
+                    <div style="height: 30%; display:flex; margin: 15px;">
+                        <h4>@time_now.ToString("HH:mm:ss")</h4>
+                    </div>
                 </div>
-            </div>
-
             <br>
 
             @if (isLoading)
@@ -210,7 +210,6 @@ else
     public SuccessResponse<OvertimeStatistic> OvertimestatisticData { get; set; } = new();
     public SuccessResponse<OvertimeStatistic> OvertimestatisticDataSup { get; set; } = new();
     public UserDTO User { get; set; } = new UserDTO();
-
 
     private async Task GetOvertimeStatistic()
     {
