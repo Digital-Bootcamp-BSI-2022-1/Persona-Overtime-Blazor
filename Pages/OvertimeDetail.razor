@@ -434,6 +434,12 @@ else
     </Dialog>
 }
 
+@if (DialogUpdateIsOpen)
+{
+    <Dialog_PostOT Title="@dialogUpdateTitle" Content="@dialogUpdateMessage" OnClose="@OnDialogUpdateClose" Type="@dialogUpdateType" StatusUpdate="@dialogUpdateStatus">
+    </Dialog_PostOT>
+}
+
 @if (isLoading)
 {
     <div class="overlay"></div>
@@ -539,11 +545,11 @@ else
 
     private async Task PostOvertimeStatus(int Status)
     {
-        isLoading = true;
         if (StartDate != null && EndDate != null && StartTime != null && EndTime != null)
         {
             try
             {
+                isLoading = true;
                 var token = await ProtectedSessionStore.GetAsync<string>("token");
                 MultipartFormDataContent formDataContent = new MultipartFormDataContent();
                 formDataContent.Add(new StringContent(StartDate.ToString("MMMM dd, yyyy")), "start_date");
@@ -570,37 +576,45 @@ else
                 Console.WriteLine(responseMessage);
                 isLoading = false;
                 Console.WriteLine("Status is Loading : " + isLoading);
+                Console.WriteLine(ResponsePost.IsSuccessStatusCode);
                 if (ResponsePost.IsSuccessStatusCode)
                 {
                     if (Status == 2)
                     {
+                        isLoading = false;
                         OpenDialog(title: "Request Success", message: "Successfully approve overtime request", type: Dialog.Category.Okay);
                     }
                     else if (Status == 3)
                     {
+                        isLoading = false;
                         OpenDialog(title: "Request Success", message: "Successfully rejecting overtime request", type: Dialog.Category.Okay);
                     }
                     else if (Status == 4)
                     {
+                        isLoading = false;
                         OpenDialog(title: "Request Success", message: "Successfully submit overtime settlement", type: Dialog.Category.Okay);
                     }
                     else if (Status == 5)
                     {
+                        isLoading = false;
                         OpenDialog(title: "Request Success", message: "Successfully requesting revisions for overtime settlement", type:
                         Dialog.Category.Okay);
                     }
                     else if (Status == 6)
                     {
+                        isLoading = false;
                         OpenDialog(title: "Request Success", message: "Successfully approve overtime settlement", type: Dialog.Category.Okay);
                     }
                     else if (Status == 9)
                     {
+                        isLoading = false;
                         OpenDialog(title: "Request Success", message: "Successfully cancelled this overtime", type: Dialog.Category.Okay);
                     }
 
                 }
                 else
                 {
+                    isLoading = false;
                     OpenDialog(title: "Request Error", message: responseMessage, type: Dialog.Category.Null);
                 }
             }
@@ -612,9 +626,9 @@ else
         }
         else
         {
+            isLoading = false;
             OpenDialog(title: "Request Error", message: "Data Submitted incomplete", type: Dialog.Category.Null);
         }
-        isLoading = false;
     }
 
     String Requester = "";
@@ -740,4 +754,40 @@ else
             PostOvertimeStatus(3);
         }
     }
+
+
+
+    private string dialogUpdateTitle = "";
+    private string dialogUpdateMessage = "";
+    private Dialog_PostOT.Category dialogUpdateType = Dialog_PostOT.Category.Okay;
+    private int dialogUpdateStatus = 0;
+    private EventCallback<int> dialogUpdateOnClose;
+    private bool DialogUpdateIsOpen = false;
+    private void OpenDialogUpdate(string title, string message, Dialog_PostOT.Category type, int status)
+    {
+        DialogUpdateIsOpen = true;
+        dialogUpdateTitle = title;
+        dialogUpdateMessage = message;
+        dialogUpdateType = type;
+        dialogUpdateStatus = status;
+    }
+    private async void OnDialogUpdateClose(int status)
+    {
+        DialogUpdateIsOpen = false;
+        if (status != 0)
+        {
+            await PostOvertimeStatus(status);
+        }
+    }
+
+    private void DialogApprove(int status)
+    {
+        OpenDialogUpdate(
+            title: "Approve Overtime",
+            message: "Are you sure you want to approve this request?",
+            type: Dialog_PostOT.Category.SaveNot,
+            status: status
+        );
+    }
+
 }

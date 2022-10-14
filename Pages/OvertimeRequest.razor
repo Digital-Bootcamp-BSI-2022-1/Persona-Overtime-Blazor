@@ -292,12 +292,16 @@ else
     {
         if (isOk)
         {
-            NavigateToOTRequest();
+            NavigateToOTSubmission();
         }
         DialogIsOpen = false;
     }
     private void NavigateToOTRequest()
     {
         Navigation.NavigateTo("/overtime/request");
+    }
+    private void NavigateToOTSubmission()
+    {
+        Navigation.NavigateTo("/overtime/submission");
     }
 }

@@ -1,0 +1,56 @@
+<div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Title</h4>
+                <button type="button" class="close" @onclick="@Cancel">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>@Content</p>
+            </div>
+            <div class="modal-footer">
+                @switch (Type)
+                {
+                    case Category.Okay:
+                        <button type="button" class="btn btn-primary" @onclick=@Ok>OK</button>
+                        break;
+                    case Category.SaveNot:
+                        <button type="button" class="btn btn-primary" @onclick=@Ok>Yes</button>
+                        <button type="button" class="btn btn-danger" @onclick="@Cancel">No</button>
+                        break;
+                    case Category.DeleteNot:
+                        <button type="button" class="btn btn-danger" @onclick=@Ok>Delete</button>
+                        <button type="button" class="btn btn-danger" @onclick="@Cancel">Don't Delete</button>
+                        break;
+                    case Category.Null:
+                        <button type="button" class="btn btn-primary" @onclick=@Cancel>OK</button>
+                        break;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Content { get; set; }
+    [Parameter] public EventCallback<int> OnClose { get; set; }
+    [Parameter] public int StatusUpdate { get; set; }
+    [Parameter] public Category Type { get; set; }
+    private Task Cancel()
+    {
+        return OnClose.InvokeAsync(0);
+    }
+    private Task Ok()
+    {
+        return OnClose.InvokeAsync(StatusUpdate);
+    }
+    public enum Category
+    {
+        Okay,
+        SaveNot,
+        DeleteNot,
+        Null
+    }
+}
